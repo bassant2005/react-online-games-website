@@ -67,13 +67,10 @@ function Profile() {
   const handlePlay = (gameTitle) => {
     if (gameTitle === "Wordle") {
       const fullPath = `${window.location.origin}/react-online-games-website/WordGame`;
-      // ✅ Open the game in a new tab
-      window.open(fullPath, "_blank");
-
-      // ✅ Close the current tab (the one with Profile)
-      window.close();
+      window.open(fullPath, "_blank"); // open in new tab
     }
   };
+
 
   return (
     <div
