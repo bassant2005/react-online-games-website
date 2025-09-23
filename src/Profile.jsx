@@ -66,8 +66,7 @@ function Profile() {
   // ⭐ Play Wordle and close modal
   const handlePlay = (gameTitle) => {
     if (gameTitle === "Wordle") {
-      const fullPath = `${window.location.origin}/react-online-games-website/WordGame`;
-      window.open(fullPath, "_blank"); // open in new tab
+      navigate("/WordGame");
     }
   };
 
