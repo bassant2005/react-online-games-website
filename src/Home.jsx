@@ -3,7 +3,8 @@ import Games from "./Games"
 import Footer from "./Footer"
 import "./styles.css";
 import Iridescence from './Iridescence';
-  
+import React from "react";
+
 function Home() {
   return(
    <>

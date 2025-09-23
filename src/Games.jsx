@@ -3,6 +3,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./styles.css";
 import "./games.css";
 import Game from "./Game";
+import React from "react";
 
 import ticTacToeImg from "./assets/tictactoe.jfif";
 import wordleImg from "./assets/wordle.jfif";

@@ -5,6 +5,7 @@ import logo from "./assets/logo.png";
 import "./styles.css";
 import "./nav.css";
 import Profile from "./Profile";
+import React from "react";
 
 function Nav() {
   return (

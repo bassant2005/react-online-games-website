@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./footer.css";
 import "./profile.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import { Modal } from "bootstrap";
+import React from "react";
 
 function Profile() {
   const [games, setGames] = useState([]);

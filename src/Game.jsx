@@ -1,5 +1,6 @@
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { Modal } from "bootstrap";
+import React from "react";
 
 function Game({ game, modalId }) {
   if (!game) return null; // safety

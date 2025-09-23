@@ -3,6 +3,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./footer.css";
 import "./styles.css";
 import logo from "./assets/logo.png";
+import React from "react";
 
 function Footer() {
   return (
