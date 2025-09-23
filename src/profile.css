@@ -1,0 +1,59 @@
+/*cart & profile*/
+.cart img{
+  margin-right: 10%;
+  height: 150px;
+}
+.cart .btn{
+  width: 100%;
+}
+.cart{
+  margin-bottom: 5%;
+  margin-top: 2.5%;
+  padding: 2%;
+  border-radius: 2% ;
+  color: var(--navy-color);
+  font-size: 20px;
+  background-color: var(--white-color);
+}
+.total{
+  padding: 2%;
+  border-radius: 2% ;
+  color: var(--navy-color);
+  font-size: 20px;
+  background-color: var(--white-color);
+}
+.cart .progress{
+  background-color: var(--navy-color);
+}
+.cart .progress-bar{
+  background-color: var(--tale-color);
+}
+
+@media (max-width: 500px) {
+  .cart img{
+    margin-right: 10%;
+    height: 70px;
+  }
+  .cart .btn{
+    width: 100%;
+  }
+  .cart{
+    margin-bottom: 5%;
+    margin-top: 2.5%;
+    padding: 2%;
+    border-radius: 2% ;
+    color: var(--navy-color);
+    font-size: 16px;
+    background-color: var(--white-color);
+  }
+  .total{
+    padding: 2%;
+    border-radius: 2% ;
+    color: var(--navy-color);
+    font-size: 16px;
+    background-color: var(--white-color);
+  }
+  .cart.progress{
+    color: var(--tale-color);
+  }
+}
