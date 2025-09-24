@@ -306,12 +306,15 @@ function WordGame() {
             </div>
 
             <div className="control d-flex">
-              <button onClick={handleTryAgain}>Try Again</button>
-              <button onClick={() => startLevel(currentLevel, true)}>Restart</button>
-              <button className="leave-btn" onClick={() => navigate("/")}>Leave</button>
-
-
-
+              <button onClick={handleTryAgain}>
+                Try Again
+              </button>
+              <button onClick={() => startLevel(currentLevel, true)}>
+                Restart
+              </button>
+              <button className="leave-btn" onClick={() => navigate("/")}>
+                Leave
+              </button>
             </div>
           </div>
         </div>

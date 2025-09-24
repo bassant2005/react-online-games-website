@@ -1,13 +1,10 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import "./footer.css";
 import "./profile.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import { Modal } from "bootstrap";
 
 function Profile() {
   const [games, setGames] = useState([]);
-  const navigate = useNavigate();
 
   // 🔄 Load games from localStorage + listen for updates
   useEffect(() => {
