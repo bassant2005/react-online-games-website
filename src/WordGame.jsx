@@ -55,15 +55,6 @@ function WordGame() {
     if (resetProgress) {
       localStorage.setItem("wordGameProgress", "0");
       setProgress(0);
-
-      // 🔹 Reset "games" array progress to 0
-      let games = JSON.parse(localStorage.getItem("games")) || [];
-      const index = games.findIndex(g => g.title === "Wordle");
-      if (index !== -1) {
-        games[index].progress = 0;
-        localStorage.setItem("games", JSON.stringify(games));
-      }
-
       levelIndex = 0;
     }
 
@@ -99,7 +90,7 @@ function WordGame() {
       )
     );
 
-    setMessage(`Level ${levelIndex + 1}`);
+    setMessage(`Level ${levelIndex + 1}: Try to guess the word`);
   };
   
   // ---------------- FIRST LOAD ----------------
@@ -221,21 +212,16 @@ function WordGame() {
     }
   };
 
-  // ---------------- TRY AGAIN ----------------
-  const handleTryAgain = () => {
-    startLevel(currentLevel, false);
-  };
-
   return (
     <div className="guess-game">
       <h1>{gameName} ✍</h1>
       {/* game area */}
       <div className="game-area">
         <div className="message">
-          <span>{message} </span><br /><br />
-          {currentDesc && <em><span>Description: </span>{currentDesc}</em>}
-          <br /><br />
-          <span>Progress: </span>{progress}%
+          {message} <br />
+          {currentDesc && <em>Description: {currentDesc}</em>}
+          <br />
+          Progress: {progress}%
         </div>
 
         <div className="content-row">
@@ -249,32 +235,30 @@ function WordGame() {
                 }`}
               >
                 <span>Try {tryIndex + 1}:</span>
-                <div className="try-inputs">
-                  {tryRow.map((letter, letterIndex) =>
-                    currentWord[letterIndex] === " " ? (
-                      <input
-                        key={letterIndex}
-                        type="text"
-                        value="/"
-                        disabled
-                        className="space-box"
-                      />
-                    ) : (
-                      <input
-                        key={letterIndex}
-                        id={`try-${tryIndex}-letter-${letterIndex + 1}`}
-                        type="text"
-                        maxLength={1}
-                        value={letter}
-                        disabled={currentTry - 1 !== tryIndex}
-                        onChange={(e) =>
-                          handleInputChange(tryIndex, letterIndex, e.target.value)
-                        }
-                        className={results[tryIndex]?.[letterIndex] || ""}
-                      />
-                    )
-                  )}
-                </div>
+                {tryRow.map((letter, letterIndex) =>
+                  currentWord[letterIndex] === " " ? (
+                    <input
+                      key={letterIndex}
+                      type="text"
+                      value="/"
+                      disabled
+                      className="space-box"
+                    />
+                  ) : (
+                    <input
+                      key={letterIndex}
+                      id={`try-${tryIndex}-letter-${letterIndex + 1}`}
+                      type="text"
+                      maxLength={1}
+                      value={letter}
+                      disabled={currentTry - 1 !== tryIndex}
+                      onChange={(e) =>
+                        handleInputChange(tryIndex, letterIndex, e.target.value)
+                      }
+                      className={results[tryIndex]?.[letterIndex] || ""}
+                    />
+                  )
+                )}
               </div>
             ))}
           </div>
@@ -296,7 +280,7 @@ function WordGame() {
               <div className="text">The letter is not in this word</div>
             </div>
 
-            <div className="control d-flex justify-content-center">
+            <div className="control d-flex">
               <button className="check" onClick={handleCheck}>
                 Check Word
               </button>
@@ -306,9 +290,12 @@ function WordGame() {
             </div>
 
             <div className="control d-flex">
-              <button onClick={handleTryAgain}>Try Again</button>
-              <button onClick={() => startLevel(currentLevel, true)}>Restart</button>
-              <button className="leave-btn" onClick={() => navigate("/")}>Leave</button>
+              <button onClick={() => startLevel(currentLevel, true)}>
+                Restart
+              </button>
+              <button className="leave-btn" onClick={() => navigate("/")}>
+                Leave
+              </button>
             </div>
           </div>
         </div>
