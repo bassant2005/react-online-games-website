@@ -38,6 +38,7 @@
   flex-direction: column; 
   align-items: center;
   margin-bottom: 20px;
+
 }
 .try {
   display: flex;
@@ -55,6 +56,8 @@
 .try input {
     width: 40px;    
     height: 40px;
+
+
     text-align: center;
     font-size: 20px;
     font-weight: bold;
@@ -155,6 +158,9 @@ span{
     gap: 20px;
   }
 
+
+
+
   .guess-game {
     padding: 10%;
   }
@@ -178,6 +184,3 @@ span{
     justify-content: center;
   }
 }
-
-
-
