@@ -22,7 +22,7 @@ function Nav() {
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
               <li className="nav-item">
                 <a 
-                  className="nav-link btn"
+                  className="nav-link"
                   onClick={() => document.getElementById("games").scrollIntoView({ behavior: "smooth" })}
                 >
                   <i className="fa-solid fa-gamepad"></i>
@@ -30,7 +30,7 @@ function Nav() {
               </li>
               <li className="nav-item">
                 <a 
-                  className="nav-link btn"
+                  className="nav-link"
                   onClick={() => document.getElementById("footer").scrollIntoView({ behavior: "smooth" })}
                 >
                   <i className="fa-solid fa-comments"></i>
