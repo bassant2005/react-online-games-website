@@ -34,19 +34,7 @@ function Game({ game, modalId }) {
   };
 
   const handleAdd = () => {
-    // 🔹 Close the modal programmatically using Bootstrap's Modal API
-    if (document.getElementById(modalId)) {
-      const modal = Modal.getInstance(document.getElementById(modalId)) || new Modal(document.getElementById(modalId));
-      modal.hide();
-
-      // ✅ Remove leftover backdrop + restore body
-      if (document.querySelector(".modal-backdrop")) document.querySelector(".modal-backdrop").remove();
-
-      document.body.classList.remove("modal-open");
-      document.body.style.overflow = "auto";
-      document.body.style.paddingRight = "";
-    }  
-    
+    // document.getElementById("games").scrollIntoView({ behavior: "smooth" })
     const stored = JSON.parse(localStorage.getItem("games")) || [];
     
     // check if already exists (by title)
@@ -111,6 +99,8 @@ function Game({ game, modalId }) {
           <div className="modal-footer">
             <button
               type="button"
+              data-bs-dismiss="modal"
+              aria-label="Close"
               className="btn btn-primary"
               onClick={handleAdd}
             >
