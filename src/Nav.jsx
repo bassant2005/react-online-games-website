@@ -17,12 +17,12 @@ function Nav() {
             <img src={logo} className="logo" alt="logo" /><span> Basantotat</span> 
           </a>
 
-          {/* ✅ Collapsible nav links */}
+          {/* ✅ nav links */}
           <div className="d-flex" id="mainNavbar">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
               <li className="nav-item">
                 <a 
-                  href="#games"
+                  href="#/games"
                   className="nav-link"
                 >
                   <i className="fa-solid fa-gamepad"></i>
@@ -39,7 +39,7 @@ function Nav() {
               </li>
               <li className="nav-item">
                 <a 
-                  href="#footer"                   
+                  href="#/footer"                   
                   className="nav-link"
                 >
                   <i className="fa-solid fa-comments"></i>
