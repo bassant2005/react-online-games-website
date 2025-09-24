@@ -50,13 +50,14 @@ function Profile() {
   );
 
   // ⭐ Remove game
-  const handleRemoveGame = (gameIndex) => {
+  const handleRemoveGame = (gameIndex,gametitel) => {
     setGames((prevGames) => {
       const updated = prevGames.filter((_, index) => index !== gameIndex);
       localStorage.setItem("games", JSON.stringify(updated));
       window.dispatchEvent(new Event("gamesUpdated"));
       return updated;
     });
+    localStorage.setItem("wordGameProgress", "0");
   };
 
   // ⭐ Play Wordle and close modal
@@ -131,7 +132,7 @@ function Profile() {
 
                       <button
                         className="btn mt-2"
-                        onClick={() => handleRemoveGame(index)}
+                        onClick={() => handleRemoveGame(index,game.title)}
                       >
                         Remove
                       </button>
