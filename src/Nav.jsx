@@ -21,21 +21,20 @@ function Nav() {
           <div className="d-flex" id="mainNavbar">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <button 
+                <a 
                   className="nav-link btn"
                   onClick={() => document.getElementById("games").scrollIntoView({ behavior: "smooth" })}
                 >
                   <i className="fa-solid fa-gamepad"></i>
-                </button>
+                </a>
               </li>
-
               <li className="nav-item">
-                <button 
+                <a 
                   className="nav-link btn"
                   onClick={() => document.getElementById("footer").scrollIntoView({ behavior: "smooth" })}
                 >
                   <i className="fa-solid fa-comments"></i>
-                </button>
+                </a>
               </li>
               <li className="nav-item">
                 <a

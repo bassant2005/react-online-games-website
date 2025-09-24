@@ -18,7 +18,10 @@ function Home() {
               <p className="fs-5 fst-italic pb-2">
                 Discover untold stories, epic battles, and worlds beyond imagination.
               </p>
-              <a className="btn main-btn" href="#games">
+              <a 
+              className="btn main-btn" 
+              onClick={() => document.getElementById("games").scrollIntoView({ behavior: "smooth" })}
+              >
                 Begin Your Journey
               </a>
             </div>
