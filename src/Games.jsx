@@ -94,7 +94,7 @@ function Games() {
   return (
     <>
       {/* 🎮 Games Section */}
-      <div id="/games" className="games text-center pt-4 pb-4">
+      <div id="games" className="games text-center pt-4 pb-4">
         <div className="container">
           <div className="main-title mt-3 mb-4 position-relative">
             <h2>let's have a new journey!</h2>

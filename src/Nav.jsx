@@ -21,12 +21,21 @@ function Nav() {
           <div className="d-flex" id="mainNavbar">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a 
-                  href="#/games"
-                  className="nav-link"
+                <button 
+                  className="nav-link btn"
+                  onClick={() => document.getElementById("games").scrollIntoView({ behavior: "smooth" })}
                 >
                   <i className="fa-solid fa-gamepad"></i>
-                </a>
+                </button>
+              </li>
+
+              <li className="nav-item">
+                <button 
+                  className="nav-link btn"
+                  onClick={() => document.getElementById("footer").scrollIntoView({ behavior: "smooth" })}
+                >
+                  <i className="fa-solid fa-comments"></i>
+                </button>
               </li>
               <li className="nav-item">
                 <a
@@ -35,14 +44,6 @@ function Nav() {
                   data-bs-target="#profileModal"
                 >
                   <i className="fa-solid fa-user"></i>
-                </a>
-              </li>
-              <li className="nav-item">
-                <a 
-                  href="#/footer"                   
-                  className="nav-link"
-                >
-                  <i className="fa-solid fa-comments"></i>
                 </a>
               </li>
             </ul>
