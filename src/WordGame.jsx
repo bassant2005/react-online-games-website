@@ -235,6 +235,22 @@ function WordGame() {
           <br /><br />
           <span>Progress: </span>{progress}%
         </div>
+        
+        <div className="phone">  
+          <h2>Key Colors</h2>         
+          <div className="key-color">
+            <div className="key in-place"></div>
+            <div className="text">Correct letter and in place</div>
+          </div>
+          <div className="key-color">
+            <div className="key not-in-place"></div>
+            <div className="text">Correct letter but not in place</div>
+          </div>
+          <div className="key-color">
+            <div className="key wrong"></div>
+            <div className="text">The letter is not in this word</div>
+          </div> 
+        </div>
 
         <div className="content-row">
           {/* inputs */}
@@ -279,19 +295,20 @@ function WordGame() {
 
           {/* key legend */}
           <div className="key-colors">
-            <h2>Key Colors</h2>
-
-            <div className="key-color">
-              <div className="key in-place"></div>
-              <div className="text">Correct letter and in place</div>
-            </div>
-            <div className="key-color">
-              <div className="key not-in-place"></div>
-              <div className="text">Correct letter but not in place</div>
-            </div>
-            <div className="key-color">
-              <div className="key wrong"></div>
-              <div className="text">The letter is not in this word</div>
+            <div className="pc">  
+              <h2>Key Colors</h2>         
+              <div className="key-color">
+                <div className="key in-place"></div>
+                <div className="text">Correct letter and in place</div>
+              </div>
+              <div className="key-color">
+                <div className="key not-in-place"></div>
+                <div className="text">Correct letter but not in place</div>
+              </div>
+              <div className="key-color">
+                <div className="key wrong"></div>
+                <div className="text">The letter is not in this word</div>
+              </div> 
             </div>
 
             <div className="control d-flex justify-content-center">

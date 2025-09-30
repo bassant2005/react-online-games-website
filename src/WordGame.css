@@ -149,6 +149,9 @@
 span{
   color: var(--tale-color);
 }
+.phone{
+  display: none;
+}
 
 /* 📱 Mobile view */
 @media (max-width: 500px) {
@@ -167,6 +170,12 @@ span{
     font-size: 15px;
   }
 
+  .pc{
+    display: none;
+  }
+  .phone{
+    display: block;
+  }
   .try input {
     width: 30px;
     height: 30px;
