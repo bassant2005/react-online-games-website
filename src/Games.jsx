@@ -15,7 +15,7 @@ import memoryMatchImg from "./assets/memorymatch.jfif";
 
 // 🎮 Game data arrays (unique + updated images)
 const gamesList = [
-  { img: ticTacToeImg, title: "Tic Tac Toe", desc: "Classic X vs O strategy game" },
+  { img: ticTacToeImg, title: "Tic Tac Toe", desc: "Several X vs O strategy games" },
   { img: wordleImg, title: "Wordle", desc: "Guess the hidden word in 6 tries" },
   { img: hangmanImg, title: "Hangman", desc: "Save the stickman by guessing letters" },
   { img: sudokuImg, title: "Sudoku", desc: "Fill the grid with numbers 1-9 logically" },

@@ -1,0 +1,1 @@
+function PyramidTicTacToe(){}export default PyramidTicTacToe

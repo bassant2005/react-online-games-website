@@ -1,0 +1,1 @@
+function FiveByFive(){}export default FiveByFive

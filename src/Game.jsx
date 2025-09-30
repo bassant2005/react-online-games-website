@@ -8,7 +8,7 @@ function Game({ game, modalId }) {
   // 🎮 Detailed descriptions for your games
   const gameDescriptions = {
     "Tic Tac Toe":
-      "A classic 3x3 grid game where two players take turns marking X or O. The goal is to get three in a row horizontally, vertically, or diagonally.",
+      "A several grid games where two players take turns marking X or O. The goal is to get the target in a row horizontally, vertically, or diagonally.",
     "Wordle":
       "Guess the hidden word within limited tries! After each guess, letters change color to show if they’re correct and in the right spot.",
     "Hangman":
@@ -30,8 +30,19 @@ function Game({ game, modalId }) {
     "Memory Match":
       "A card-matching game where all cards are laid face down. Players flip two cards at a time, trying to find matching pairs using memory.",
     "Checkers":
-      "A strategy board game played on an 8x8 grid. Players move their pieces diagonally to capture opponent pieces, aiming to remove all opponent pieces or block them."
+      "A strategy board game played on an 8x8 grid. Players move their pieces diagonally to capture opponent pieces, aiming to remove all opponent pieces or block them.",
+
+    // 🎮 New ones
+    "XO Special":
+      "A reverse version of X and O where the strategy flips — avoid making three in a row!",
+    "Among Sus":
+      "A fun imposter-themed mini game inspired by tic tac toe where you have to make the word 'sus' in any diraction to win.",
+    "5x5 Grid":
+      "A bigger tic tac toe challenge with more rows and columns to strategize.",
+    "Pyramid Tic Tac Toe":
+      "A unique pyramid-shaped tic tac toe variant that adds a new twist to the gameplay."
   };
+
 
   const handleAdd = () => {
     // document.getElementById("games").scrollIntoView({ behavior: "smooth" })

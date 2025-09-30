@@ -62,11 +62,17 @@ function Profile() {
 
   // ⭐ Play Wordle and close modal
   const handlePlay = (gameTitle) => {
+    let fullPath = '';
+    
     if (gameTitle === "Wordle") {
-      const fullPath = `${window.location.origin}/react-online-games-website/#/WordGame`; 
-      window.open(fullPath, "_blank");
-      window.close();
+      fullPath = `${window.location.origin}/react-online-games-website/#/WordGame`; 
     }
+    else if(gameTitle === "Tic Tac Toe"){
+      fullPath = `${window.location.origin}/react-online-games-website/#/TicTacToe`; 
+    }
+
+    window.open(fullPath, "_blank");
+    window.close();
   };
 
   return (

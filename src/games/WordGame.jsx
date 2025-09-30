@@ -312,22 +312,22 @@ function WordGame() {
             </div>
 
             <div className="control d-flex justify-content-center">
-              <button className="check" onClick={handleCheck}>
+              <button className="gamesB" onClick={handleCheck}>
                 Check Word
               </button>
-              <button onClick={handleHint} disabled={hintsLeft === 0}>
+              <button className="gamesB" onClick={handleHint} disabled={hintsLeft === 0}>
                 Hint ({hintsLeft})
               </button>
             </div>
 
             <div className="control d-flex">
-              <button onClick={handleTryAgain}>
+              <button onClick={handleTryAgain} className="gamesB">
                 Try Again
               </button>
-              <button onClick={() => startLevel(currentLevel, true)}>
+              <button className="gamesB" onClick={() => startLevel(currentLevel, true)}>
                 Restart
               </button>
-              <button className="leave-btn" onClick={() => navigate("/")}>
+              <button className="gamesB" onClick={() => navigate("/")}>
                 Leave
               </button>
             </div>

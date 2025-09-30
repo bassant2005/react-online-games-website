@@ -1,0 +1,50 @@
+.tic {
+  height: 170px;
+}
+.tic img {
+  height: 170px;
+}
+.tic .overlay {
+  height: 170px;
+}
+
+/* 3x3 games */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 5px;
+  justify-content: center;
+  margin: 20px auto;
+}
+.square {
+  background:var(--red-color);
+  color: var(--navy-color);
+  font-size: 2rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+.square:hover {
+  background: var(--tale-color);
+}
+
+@media (max-width: 500px) {
+  .tic {
+    max-width: 100px;
+    height: 100px;        
+  }
+  .tic img {
+    width: 100px;             
+    height: 100px;
+  }
+  .tic .overlay {
+    width: 100px;           
+    height: 100px;
+  }
+}
+
