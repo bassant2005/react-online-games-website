@@ -64,19 +64,29 @@ function ClassicTicTacToe() {
       const [a, b, c] = combo;
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
         setWinner(board[a]);
+
         // ✅ Only increase progress if player (X) wins AND hasn't unlocked this yet
         if (board[a] === "X" && progress < 20) {
-          setProgress(20); // unlock this game
+          const newProgress = 20;
+          setProgress(newProgress);
+
+          // ✅ Update in games list (localStorage)
+          let games = JSON.parse(localStorage.getItem("games")) || [];
+          const index = games.findIndex(g => g.title === "Tic Tac Toe");
+          if (index !== -1) {
+            games[index].progress = newProgress;
+            localStorage.setItem("games", JSON.stringify(games));
+          }
         }
+
         return;
       }
     }
 
     if (board.every((cell) => cell !== null) && !winner) {
-        setWinner("draw");
+      setWinner("draw");
     }
-    };
-
+  };
 
   const resetGame = () => {
     setBoard(Array(9).fill(null));
