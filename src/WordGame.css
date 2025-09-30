@@ -116,9 +116,9 @@
     background-color: var(--gray-color);
 }
 .text {
-    font-size: 18px;
-    font-weight: bold;
-    color: var(--white-color);
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--white-color);
 }
 .content-row {
     display: flex;
@@ -155,18 +155,16 @@ span{
   .content-row {
     flex-direction: column;
     align-items: center;
-    gap: 20px;
-  }
-
-
-
-
-  .guess-game {
-    padding: 10%;
   }
 
   .key-colors {
-    margin-left: 0;
+    width: 300px;
+    align-items: center;
+    margin: 10px auto;
+  }
+
+  .text{
+    font-size: 15px;
   }
 
   .try input {
@@ -175,12 +173,15 @@ span{
     font-size: 16px;
   }
 
-  /* 🔹 Split long words into 2 rows */
+  .control button{
+    font-size: 15px;
+  }
+
   .try-inputs {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
     gap: 5px;
-    max-width: 220px; /* ensures wrapping into 2 rows */
+    max-width: 200px;
     justify-content: center;
   }
 }

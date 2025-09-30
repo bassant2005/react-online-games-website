@@ -49,6 +49,7 @@ function WordGame() {
   const [message, setMessage] = useState("");
   const [hintsLeft, setHintsLeft] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
 
   // ---------------- START LEVEL ----------------
   const startLevel = (levelIndex, resetProgress = false) => {
@@ -84,6 +85,7 @@ function WordGame() {
     setHints(level.hints);
     setHintsLeft(level.hints);
     setCurrentTry(1);
+    setGameOver(false);
 
     // keep spaces as "/"
     const wordArr = chosenWord.split("");
@@ -131,11 +133,6 @@ function WordGame() {
         `#try-${tryIndex}-letter-${letterIndex + 2}`
       );
       if (nextInput) nextInput.focus();
-    } else {
-      const prevInput = document.querySelector(
-        `#try-${tryIndex}-letter-${letterIndex}`
-      );
-      if (prevInput) prevInput.focus();
     }
   };
 
@@ -194,6 +191,7 @@ function WordGame() {
         setCurrentTry(currentTry + 1);
       } else {
         setMessage(`💀 Game Over! The word was ${currentWord}`);
+        setGameOver(true);
       }
     }
   };
@@ -266,7 +264,7 @@ function WordGame() {
                         type="text"
                         maxLength={1}
                         value={letter}
-                        disabled={currentTry - 1 !== tryIndex}
+                        disabled={gameOver || currentTry - 1 !== tryIndex}
                         onChange={(e) =>
                           handleInputChange(tryIndex, letterIndex, e.target.value)
                         }
