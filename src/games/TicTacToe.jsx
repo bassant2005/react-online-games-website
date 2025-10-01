@@ -13,14 +13,27 @@ import susImg from "../assets/sus.jpg";
 import _5x5Img from "../assets/5x5.png"; 
 import pyramidImg from "../assets/pyramid tic tac toe.jpg"; 
 
-// 🎮 Game data arrays (unique + updated images + routes)
-const gamesList = [
-  { img: ticTacToeImg, title: "Tic Tac Toe", desc: "Classic X vs O strategy game", path: "/ClassicTicTacToe" },
-  { img: reversxoImg, title: "XO Special", desc: "Reverse X and O variant", path: "/ReverseXO" },
-  { img: pyramidImg, title: "Pyramid Tic Tac Toe", desc: "Unique pyramid layout", path: "/PyramidTicTacToe" },
-  { img: susImg, title: "Among Sus", desc: "Fun imposter mini game", path: "/AmongSus" },
-  { img: _5x5Img, title: "5x5 Grid", desc: "Bigger tic tac toe challenge", path: "/FiveByFive" },
+// 🎮 Default games list
+let gamesList = [
+  { img: ticTacToeImg, title: "Tic Tac Toe", desc: "Classic X vs O strategy game", path: "/ClassicTicTacToe", win: false },
+  { img: reversxoImg, title: "XO Special", desc: "Reverse X and O variant", path: "/ReverseXO", win: false },
+  { img: pyramidImg, title: "Pyramid Tic Tac Toe", desc: "Unique pyramid layout", path: "/PyramidTicTacToe", win: false },
+  { img: susImg, title: "Sus", desc: "Fun imposter mini game", path: "/Sus", win: false },
+  { img: _5x5Img, title: "5x5 Grid", desc: "Bigger tic tac toe challenge", path: "/FiveByFive", win: false },
 ];
+
+// Save to localStorage only if not already saved
+if (!localStorage.getItem("gamesList")) {
+  localStorage.setItem("gamesList", JSON.stringify(gamesList));
+}
+
+// ✅ Reset all wins to false
+function resetGames() {
+  let games = JSON.parse(localStorage.getItem("gamesList")) || [];
+  games = games.map((g) => ({ ...g, win: false })); 
+  localStorage.setItem("gamesList", JSON.stringify(games));
+  window.location.reload(); // 🔄 refresh to update progress & lock games
+}
 
 // 🎮 Reusable Card Component
 function GameCard({ img, title, desc, path, locked }) {
@@ -28,7 +41,7 @@ function GameCard({ img, title, desc, path, locked }) {
 
   const handlePlay = () => {
     if (!locked) {
-      navigate(path); // 🚀 Navigate to game route
+      navigate(path);
     }
   };
 
@@ -57,6 +70,9 @@ function TicTacToe() {
   const navigate = useNavigate();
   const [progress] = useProgress();
 
+  // ✅ Reload games from localStorage each render
+  const games = JSON.parse(localStorage.getItem("gamesList")) || gamesList;
+
   return (
     <div id="games" className="games text-center pt-4 pb-4">
       <div className="tic-container container">
@@ -68,8 +84,8 @@ function TicTacToe() {
         </div>
 
         <div className="row d-flex justify-content-center">
-          {gamesList.map((game, index) => {
-            const unlockThreshold = (index / gamesList.length) * 100;
+          {games.map((game, index) => {
+            const unlockThreshold = (index / games.length) * 100;
             const locked = progress < unlockThreshold;
 
             return <GameCard key={index} {...game} locked={locked} />;
@@ -78,6 +94,11 @@ function TicTacToe() {
       </div>
       <button className="gamesB" onClick={() => navigate("/")}>
         Leave
+      </button>      
+      
+      {/* ✅ FIXED: don’t call resetGames(), just pass the function */}
+      <button className="gamesB" onClick={resetGames}>
+        Reset
       </button>
     </div>
   );
