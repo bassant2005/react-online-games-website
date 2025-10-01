@@ -19,6 +19,9 @@
 }
 
 /* commen*/
+.text-white-50{
+  font-size: 20px;
+}
 .square:hover, .pyramid .cell:hover {
   background: var(--tale-color);
 }
@@ -37,7 +40,8 @@
   margin: 5px;
   height: 90px;
 }
-/* ---------- Pyramid Tic Tac Toe ---------- */
+
+/*Pyramid Tic Tac Toe*/
 .pyramid {
   text-align: center;
   margin: 20px auto;

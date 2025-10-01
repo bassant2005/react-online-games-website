@@ -79,7 +79,8 @@ function TicTacToe() {
         <div className="main-title mt-3 mb-4 position-relative">
           <h2>Test the different tic tac toe game boards!</h2>
           <p className="text-white-50 fst-italic">
-            Progress: {progress}% – Unlock games by winning!
+            in each game you have easy and hard levels, you will unlock the next games when you win the easy mode in the previous ones 
+            <br/>Progress: {progress}% – Unlock games by winning!
           </p>
         </div>
 
