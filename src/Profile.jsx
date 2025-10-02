@@ -69,9 +69,7 @@ function Profile() {
     else if(gameTitle === "Tic Tac Toe"){
       fullPath = `${window.location.origin}/react-online-games-website/#/TicTacToe`; 
     }
-
-    window.open(fullPath, "_blank");
-    window.close();
+    window.open(fullPath);
   };
 
   return (
