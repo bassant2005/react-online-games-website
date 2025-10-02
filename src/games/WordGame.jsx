@@ -5,7 +5,10 @@ import { useLocation } from "react-router-dom";
 
 function WordGame() {
   const navigate = useNavigate();
-
+  
+  let games = JSON.parse(localStorage.getItem("games")) || [];
+  const index = games.findIndex(g => g.title === "Wordle");
+      
   // ---------------- GAME CONFIG ----------------
   const gameName = "Guess the Word";
 
@@ -48,18 +51,15 @@ function WordGame() {
   const [results, setResults] = useState([]);
   const [message, setMessage] = useState("");
   const [hintsLeft, setHintsLeft] = useState(0);
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState(games[index].progress);
   const [gameOver, setGameOver] = useState(false);
 
   // ---------------- START LEVEL ----------------
   const startLevel = (levelIndex, resetProgress = false) => {
     if (resetProgress) {
-      localStorage.setItem("wordGameProgress", "0");
       setProgress(0);
 
       // 🔹 Reset "games" array progress to 0
-      let games = JSON.parse(localStorage.getItem("games")) || [];
-      const index = games.findIndex(g => g.title === "Wordle");
       if (index !== -1) {
         games[index].progress = 0;
         localStorage.setItem("games", JSON.stringify(games));
@@ -107,9 +107,8 @@ function WordGame() {
   // ---------------- FIRST LOAD ----------------
   const location = useLocation();
   useEffect(() => {
-    const savedProgress =
-      parseInt(localStorage.getItem("wordGameProgress")) || 0;
-    setProgress(savedProgress);
+
+    const savedProgress = games[index].progress
 
     if (savedProgress >= 100) {
       setMessage("🏆 Congratulations! You already finished the game 🎉");
@@ -166,13 +165,8 @@ function WordGame() {
       const newProgress = Math.round(((currentLevel + 1) / levels.length) * 100);
 
       setProgress(newProgress);
-      localStorage.setItem("wordGameProgress", newProgress.toString());
-
-      let games = JSON.parse(localStorage.getItem("games")) || [];
-      // Find the game by title
-      const index = games.findIndex(g => g.title === "Wordle");
       if (index !== -1) {
-        games[index].progress = newProgress; // new progress value
+        games[index].progress = newProgress; 
         localStorage.setItem("games", JSON.stringify(games));
       }
 

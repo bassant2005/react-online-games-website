@@ -160,9 +160,11 @@ function ClassicTicTacToe() {
 
   return (
     <div className="tic-container text-center mt-4">
-      <h2>
-        Classic Tic Tac Toe ({aiMode ? "hard" : "easy"})
-      </h2>
+      <h3>
+        Classic Tic Tac Toe  <br/>
+        ({aiMode ? "You opend the next game now but don't leave try to bit the hard mode first !" 
+        : "Let's start with the easy one"})
+      </h3>
 
       <p className="text-white-50 fst-italic">
         {winner

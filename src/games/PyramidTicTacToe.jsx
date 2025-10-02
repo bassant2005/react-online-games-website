@@ -194,8 +194,12 @@ export default function PyramidTicTacToe() {
   }, [winner, mode]);
 
   return (
-    <div className="pyramid">
-      <h2>Pyramid Tic Tac Toe ({mode === "random" ? "Easy" : "Hard"})</h2>
+    <div className="pyramid tic-container">
+      <h3>Pyramid Tic Tac Toe  <br/>
+      ({mode === "random" ? "Let's start with the easy one" 
+      : "You opend the next game now but don't leave try to bit the hard mode first !" })
+      </h3>
+      
       <p className="text-white-50 fst-italic">
         {winner
           ? winner === "draw"

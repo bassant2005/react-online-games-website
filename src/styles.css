@@ -42,7 +42,7 @@ input {
   color: var(--navy-color);
   background-color: var(--tale-color);
 }
-h2{
+h2,h3{
   color: var(--red-color);
 }
 /* intro */

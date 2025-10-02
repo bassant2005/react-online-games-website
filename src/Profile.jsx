@@ -50,14 +50,13 @@ function Profile() {
   );
 
   // ⭐ Remove game
-  const handleRemoveGame = (gameIndex,gametitel) => {
+  const handleRemoveGame = (gameIndex) => {
     setGames((prevGames) => {
       const updated = prevGames.filter((_, index) => index !== gameIndex);
       localStorage.setItem("games", JSON.stringify(updated));
       window.dispatchEvent(new Event("gamesUpdated"));
       return updated;
     });
-    localStorage.setItem("wordGameProgress", "0");
   };
 
   // ⭐ Play Wordle and close modal

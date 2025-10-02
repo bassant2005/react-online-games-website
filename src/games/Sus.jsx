@@ -148,8 +148,9 @@ function Sus() {
         games[index].win = true; // ✅ mark as won
         localStorage.setItem("gamesList", JSON.stringify(games));
       }
+
       setTimeout(() => {
-        resetGame("ai"); // ✅ switch and reset into Hard mode
+        resetGame("ai");
       }, 700);
     }
   }, [winner, mode]);
@@ -170,18 +171,22 @@ function Sus() {
   }, [board, scorePlayer, scoreComputer, winner, mode]);
 
   // ✅ Restart game (back to random)
-  const resetGame = (newMode = mode) => {
+  function resetGame(newMode = mode){
     setBoard(Array(9).fill(" "));
     setWinner(null);
     setIsPlayerTurn(true);
     setScorePlayer(0);
     setScoreComputer(0);
-    setMode(newMode); // ✅ keep or change based on parameter
-  };
+    setMode(newMode);
+  }
 
   return (
     <div className="tic-container text-center mt-4">
-      <h2>SuS Tic Tac Toe ({mode === "random" ? "Easy" : "Hard"})</h2>
+      <h3>SuS Tic Tac Toe <br/>
+      ({mode === "random" ? "Let's start with the easy one" 
+      : "You opend the next game now but don't leave try to bit the hard mode first !" })
+      </h3>
+      
       <p className="text-white-50 fst-italic">
         {winner
           ? winner === "tie"
@@ -193,9 +198,7 @@ function Sus() {
           ? "Your turn (X)"
           : "Computer's turn (O)"}
         <br />
-        Player (S): {scorePlayer}
-        <br />
-        Computer (U): {scoreComputer}
+        Player (S): {scorePlayer} / Computer (U): {scoreComputer}
         <br />
       </p>
       <div className="board">
@@ -210,7 +213,7 @@ function Sus() {
         <button className="gamesB" onClick={() => navigate("/TicTacToe")}>
           Leave
         </button>
-        <button onClick={resetGame} className="gamesB ms-3">
+        <button onClick={() => resetGame(mode)} className="gamesB ms-3">
           Play Again
         </button>
       </div>

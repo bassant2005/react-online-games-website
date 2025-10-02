@@ -20,6 +20,17 @@ function ReverseXO() {
     [2, 4, 6],
   ];
 
+  // ✅ Check if a player made 3 in a row
+  const isWin = (currentBoard, symbol) => {
+    return winningCombos.some(([a, b, c]) => {
+      return (
+        currentBoard[a] === symbol &&
+        currentBoard[b] === symbol &&
+        currentBoard[c] === symbol
+      );
+    });
+  };
+
   // ✅ Misère condition: 3-in-a-row = you LOSE
   const checkWinner = (currentBoard) => {
     for (let combo of winningCombos) {
@@ -35,6 +46,13 @@ function ReverseXO() {
 
         // 🎉 If player wins (X), switch to hard AI
         if (winnerPlayer === "X" && !aiMode) {
+          let games = JSON.parse(localStorage.getItem("gamesList")) || [];
+          const index = games.findIndex((g) => g.title === "XO Special");
+          if (index !== -1) {
+             games[index].win = true;
+             localStorage.setItem("gamesList", JSON.stringify(games));
+          }
+
           setAiMode(true);
           setTimeout(() => {
             resetGame(); // reset board for hard mode
@@ -49,56 +67,56 @@ function ReverseXO() {
     }
   };
 
-  // 🧠 Hard AI logic (Misère)
-  const hardMove = (currentBoard) => {
-    const emptyCells = currentBoard
+  // 🧠 Minimax algorithm for Misère Tic Tac Toe
+  const minimax = (board, isMaximizing) => {
+    if (isWin(board, "X")) return +10; // X made 3 -> O wins
+    if (isWin(board, "O")) return -10; // O made 3 -> O loses
+    if (board.every((cell) => cell !== null)) return 0; // draw
+
+    const emptyCells = board
       .map((cell, idx) => (cell === null ? idx : null))
       .filter((idx) => idx !== null);
 
-    if (emptyCells.length === 0) return null;
-
-    // 1️⃣ Try to force player into a losing move
-    for (let idx of emptyCells) {
-      const simBoard = [...currentBoard];
-      simBoard[idx] = "O"; // AI move
-      let forcesLoss = false;
-
-      const playerMoves = simBoard
-        .map((cell, i) => (cell === null ? i : null))
-        .filter((i) => i !== null);
-
-      for (let pm of playerMoves) {
-        const testBoard = [...simBoard];
-        testBoard[pm] = "X"; // simulate player move
-        if (isWin(testBoard, "X")) {
-          forcesLoss = true;
-          break;
-        }
+    if (isMaximizing) {
+      let bestScore = -Infinity;
+      for (let idx of emptyCells) {
+        const newBoard = [...board];
+        newBoard[idx] = "O";
+        let score = minimax(newBoard, false);
+        bestScore = Math.max(score, bestScore);
       }
-
-      if (forcesLoss) return idx;
+      return bestScore;
+    } else {
+      let bestScore = +Infinity;
+      for (let idx of emptyCells) {
+        const newBoard = [...board];
+        newBoard[idx] = "X";
+        let score = minimax(newBoard, true);
+        bestScore = Math.min(score, bestScore);
+      }
+      return bestScore;
     }
-
-    // 2️⃣ Avoid creating a win for itself (O)
-    for (let idx of emptyCells) {
-      const simBoard = [...currentBoard];
-      simBoard[idx] = "O";
-      if (!isWin(simBoard, "O")) return idx;
-    }
-
-    // 3️⃣ Otherwise random
-    return emptyCells[Math.floor(Math.random() * emptyCells.length)];
   };
 
-  // ✅ Check win helper
-  const isWin = (currentBoard, symbol) => {
-    return winningCombos.some(([a, b, c]) => {
-      return (
-        currentBoard[a] === symbol &&
-        currentBoard[b] === symbol &&
-        currentBoard[c] === symbol
-      );
-    });
+  // 🎯 Hard AI move
+  const hardMove = (board) => {
+    const emptyCells = board
+      .map((cell, idx) => (cell === null ? idx : null))
+      .filter((idx) => idx !== null);
+
+    let bestScore = -Infinity;
+    let move = null;
+
+    for (let idx of emptyCells) {
+      const newBoard = [...board];
+      newBoard[idx] = "O";
+      let score = minimax(newBoard, false);
+      if (score > bestScore) {
+        bestScore = score;
+        move = idx;
+      }
+    }
+    return move;
   };
 
   // 🤖 Computer move
@@ -124,6 +142,7 @@ function ReverseXO() {
     setIsPlayerTurn(true);
   };
 
+  // 🎮 Player move
   const handleClick = (index) => {
     if (!isPlayerTurn || board[index] || winner) return;
 
@@ -134,6 +153,7 @@ function ReverseXO() {
     setIsPlayerTurn(false);
   };
 
+  // ⏱️ Trigger AI when it's its turn
   useEffect(() => {
     if (!isPlayerTurn && !winner) {
       const timer = setTimeout(() => {
@@ -143,6 +163,7 @@ function ReverseXO() {
     }
   }, [isPlayerTurn, winner, board]);
 
+  // 🔄 Reset game
   const resetGame = () => {
     setBoard(Array(9).fill(null));
     setWinner(null);
@@ -151,7 +172,11 @@ function ReverseXO() {
 
   return (
     <div className="tic-container text-center mt-4 ">
-      <h2>Misère Tic Tac Toe ({aiMode ? "hard" : "easy"})</h2>
+      <h3>Misère Tic Tac Toe <br/>
+      ({aiMode ? "You opend the next game now but don't leave try to bit the hard mode first !" 
+      : "Let's start with the easy one"})
+      </h3>
+      
       <p className="text-white-50 fst-italic">
         {winner
           ? winner === "draw"
