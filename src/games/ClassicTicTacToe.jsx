@@ -127,11 +127,14 @@ function ClassicTicTacToe() {
           
           let games = JSON.parse(localStorage.getItem("gamesList")) || [];
           const index = games.findIndex((g) => g.title === "Tic Tac Toe");
-          if (index !== -1) {
-             games[index].win = true;
-             localStorage.setItem("gamesList", JSON.stringify(games));
-          }
           
+          if (index !== -1) {
+            games[index].win = true;
+            localStorage.setItem("gamesList", JSON.stringify(games));
+
+            window.dispatchEvent(new Event("gamesUpdated"));
+          }
+
           setTimeout(() => {
             setBoard(Array(9).fill(null));
             setWinner(null);
