@@ -43,9 +43,7 @@ function Game({ game, modalId }) {
       "A unique pyramid-shaped tic tac toe variant that adds a new twist to the gameplay."
   };
 
-
   const handleAdd = () => {
-    // document.getElementById("games").scrollIntoView({ behavior: "smooth" })
     const stored = JSON.parse(localStorage.getItem("games")) || [];
     
     // check if already exists (by title)
@@ -61,9 +59,6 @@ function Game({ game, modalId }) {
 
       stored.push(newGame);
       localStorage.setItem("games", JSON.stringify(stored));
-
-      // 🔔 Notify Profile.jsx instantly
-      window.dispatchEvent(new Event("gamesUpdated"));
     }
   };
 
