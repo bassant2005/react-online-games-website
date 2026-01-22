@@ -114,30 +114,26 @@ function Matching() {
                     <h3>
                         {hasWon ? "🎉 You matched all cards!" : "Flip two cards"}
                     </h3>
-
-                    <div className="justify-content-center g-3">
+                    <div className="memory-board">
                         {cards.map((card, index) => (
-                            <div key={card.id} className="col-4 col-md-3 col-lg-2">
+                            <div key={card.id}>
                                 <div
-                                    className={`shadow text-center ${
+                                    className={`square ${
                                         flipped.includes(index) || matched.includes(index)
-                                            ? "border-success"
+                                            ? "active"
                                             : ""
                                     }`}
-                                    style={{ cursor: "pointer" }}
                                     onClick={() => handleFlip(index)}
                                 >
-                                    <div className="box fs-2">
-                                        {flipped.includes(index) || matched.includes(index) ? (
-                                            symbolType === "faces" ? (
-                                                <i className={`fa-solid ${card.value}`}></i>
-                                            ) : (
-                                                card.value
-                                            )
+                                    {flipped.includes(index) || matched.includes(index) ? (
+                                        symbolType === "faces" ? (
+                                            <i className={`fa-solid ${card.value}`}></i>
                                         ) : (
-                                            <i className="fa-solid fa-question"></i>
-                                        )}
-                                    </div>
+                                            card.value
+                                        )
+                                    ) : (
+                                        <i className="fa-solid fa-question"></i>
+                                    )}
                                 </div>
                             </div>
                         ))}
