@@ -3,7 +3,6 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "../styles.css";
 import "../games.css";
 import "./tictactoe.css";
-import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useProgress from "./progress.jsx";
 

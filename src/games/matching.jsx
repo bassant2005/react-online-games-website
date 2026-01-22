@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import "../styles.css";
+import "../games.css";
 
 const SYMBOLS = {
     numbers: ["1", "2", "3", "4", "5", "6", "7", "8"],
@@ -80,13 +82,13 @@ function Matching() {
                 <>
                     <p className="text-muted">Choose what to play with</p>
                     <div className="d-flex justify-content-center gap-3">
-                        <button className="btn btn-outline-primary" onClick={() => setSymbolType("numbers")}>
+                        <button className="btn" onClick={() => setSymbolType("numbers")}>
                             🔢 Numbers
                         </button>
-                        <button className="btn btn-outline-success" onClick={() => setSymbolType("letters")}>
+                        <button className="btn" onClick={() => setSymbolType("letters")}>
                             🔠 Letters
                         </button>
-                        <button className="btn btn-outline-warning" onClick={() => setSymbolType("faces")}>
+                        <button className="btn" onClick={() => setSymbolType("faces")}>
                             😊 Faces
                         </button>
                     </div>
@@ -98,9 +100,9 @@ function Matching() {
                 <>
                     <p className="text-muted mt-3">Choose difficulty</p>
                     <div className="d-flex justify-content-center gap-3">
-                        <button className="btn btn-success" onClick={() => startGame(6)}>Easy</button>
-                        <button className="btn btn-warning" onClick={() => startGame(10)}>Medium</button>
-                        <button className="btn btn-danger" onClick={() => startGame(16)}>Hard</button>
+                        <button className="btn" onClick={() => startGame(6)}>Easy</button>
+                        <button className="btn" onClick={() => startGame(10)}>Medium</button>
+                        <button className="btn" onClick={() => startGame(16)}>Hard</button>
                     </div>
                 </>
             )}
@@ -148,7 +150,7 @@ function Matching() {
                         <button className="btn btn-primary" onClick={() => startGame(level)}>
                             Restart
                         </button>
-                        <button className="btn btn-outline-danger" onClick={() => navigate("/TicTacToe")}>
+                        <button className="btn btn-outline-danger" onClick={() => navigate("/")}>
                             Leave
                         </button>
                     </div>

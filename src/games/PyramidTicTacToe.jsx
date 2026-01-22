@@ -109,7 +109,6 @@ function getBestMove(board) {
 
 // ---------- Component ----------
 export default function PyramidTicTacToe() {
-  const [progress, setProgress] = useProgress(); // ✅ link with XOprogress.js
   const [board, setBoard] = useState(initialBoard());
   const [turn, setTurn] = useState("X");
   const [mode, setMode] = useState("random"); // ✅ start in easy mode
