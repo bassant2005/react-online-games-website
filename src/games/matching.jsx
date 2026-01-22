@@ -10,16 +10,16 @@ const SYMBOLS = {
     numbers: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
     letters: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"],
     faces: [
-        "fa-thin fa-face-grin-stars",
-        "fa-thin fa-face-grin-hearts",
-        "fa-thin fa-face-grin-wink",
-        "fa-thin fa-face-rolling-eyes",
-        "fa-thin fa-face-laugh-beam",
-        "fa-thin fa-face-grin-tears",
-        "fa-thin fa-face-grin-tongue-wink",
-        "fa-thin fa-face-angry",
-        "fa-thin fa-face-surprise",
-        "fa-thin fa-face-smile"
+        "U_U",
+        ">_<",
+        ">.<",
+        "UwU",
+        "^_^",
+        "T_T",
+        "O_O",
+        ">o<",
+        "^_~",
+        "(●'◡'●)"
     ],
 };
 
@@ -181,7 +181,7 @@ function Matching() {
                     </div>
 
                     {/* CONTROLS */}
-                    <div className="mt-4 d-flex justify-content-center gap-3">
+                    <div className="mt-4 mb-4 d-flex justify-content-center gap-3">
                         <button className="btn" onClick={() => setLevel(null)}>
                             Change Level
                         </button>
