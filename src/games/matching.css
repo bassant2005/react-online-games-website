@@ -1,7 +1,3 @@
-/* ================================
-   MEMORY MATCHING GAME
-================================ */
-
 /* Board layout: auto rows, evenly spaced */
 .memory-board {
     display: grid;
@@ -34,29 +30,7 @@
     box-shadow: 0 0 12px rgba(0, 150, 255, 0.6);
 }
 
-/* Question mark */
-.memory-board .fa-question {
-    color: var(--navy-color);
-    opacity: 0.6;
-}
-
 /* Faces (Font Awesome) */
 .memory-board i {
     color: var(--navy-color);
-}
-
-/* ================================
-   RESPONSIVE
-================================ */
-@media (max-width: 500px) {
-    .memory-board {
-        max-width: 300px;
-        gap: 8px;
-    }
-
-    .memory-board .square {
-        width: 70px;
-        height: 70px;
-        font-size: 1.4rem;
-    }
 }

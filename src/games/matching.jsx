@@ -125,14 +125,12 @@ function Matching() {
                                     }`}
                                     onClick={() => handleFlip(index)}
                                 >
-                                    {flipped.includes(index) || matched.includes(index) ? (
+                                    {(flipped.includes(index) || matched.includes(index)) && (
                                         symbolType === "faces" ? (
                                             <i className={`fa-solid ${card.value}`}></i>
                                         ) : (
                                             card.value
                                         )
-                                    ) : (
-                                        <i className="fa-solid fa-question"></i>
                                     )}
                                 </div>
                             </div>
