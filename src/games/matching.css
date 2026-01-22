@@ -28,4 +28,14 @@
     background: var(--tale-color);
     box-shadow: 0 0 12px rgba(0, 150, 255, 0.6);
 }
+@media (max-width: 500px) {
+    .memory-board {
+        grid-template-columns: repeat(4, 60px); /* 3 cards per row */
+    }
+
+    .memory-board .square {
+        width: 60px;
+        height: 60px;
+    }
+}
 
