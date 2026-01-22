@@ -167,7 +167,7 @@ function Matching() {
             {symbolType && (
                 <>
                     <h3>{hasWon ? "🎉 Level Complete!" : `Level: ${LEVELS[levelIndex]}`}</h3>
-                    <p>Helps left: {helpsLeft}</p>
+                    <h3>Helps left: {helpsLeft}</h3>
 
                     <div className="memory-board">
                         {cards.map((card, index) => (
