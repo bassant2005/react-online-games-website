@@ -1,27 +1,35 @@
 import React, { useState } from "react";
-import "./tictactoe.css";
 import { useNavigate } from "react-router-dom";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
-const LEVELS = {
-    easy: 6,
-    medium: 10,
-    hard: 16,
+const SYMBOLS = {
+    numbers: ["1", "2", "3", "4", "5", "6", "7", "8"],
+    letters: ["A", "B", "C", "D", "E", "F", "G", "H"],
+    faces: [
+        "fa-thin fa-face-grin-stars",
+        "fa-thin fa-face-grin-hearts",
+        "fa-thin fa-face-grin-wink",
+        "fa-thin fa-face-rolling-eyes",
+        "fa-thin fa-face-laugh-beam",
+        "fa-thin fa-face-grin-tears",
+        "fa-thin fa-face-grin-tongue-wink",
+        "fa-thin fa-face-angry",
+    ],
 };
 
 function Matching() {
     const navigate = useNavigate();
 
+    const [symbolType, setSymbolType] = useState(null);
     const [level, setLevel] = useState(null);
     const [cards, setCards] = useState([]);
     const [flipped, setFlipped] = useState([]);
     const [matched, setMatched] = useState([]);
     const [lockBoard, setLockBoard] = useState(false);
 
-    // 🎲 Create & shuffle cards
     const startGame = (size) => {
-        const pairs = size / 2;
-        const values = Array.from({ length: pairs }, (_, i) => i + 1);
+        const values = SYMBOLS[symbolType].slice(0, size / 2);
 
         const deck = [...values, ...values]
             .sort(() => Math.random() - 0.5)
@@ -46,10 +54,10 @@ function Matching() {
         if (newFlipped.length === 2) {
             setLockBoard(true);
 
-            const [first, second] = newFlipped;
+            const [a, b] = newFlipped;
 
-            if (cards[first].value === cards[second].value) {
-                setMatched((prev) => [...prev, first, second]);
+            if (cards[a].value === cards[b].value) {
+                setMatched((prev) => [...prev, a, b]);
                 setFlipped([]);
                 setLockBoard(false);
             } else {
@@ -61,72 +69,86 @@ function Matching() {
         }
     };
 
-    // 🎉 Win condition
     const hasWon = matched.length === cards.length && cards.length > 0;
 
     return (
-        <div className="tic-container text-center mt-4">
-            <h3>🃏 Memory Card Matching Game</h3>
+        <div className="container text-center mt-4">
+            <h3>🧠 Memory Matching Game</h3>
 
-            {!level && (
+            {/* SYMBOL CHOICE */}
+            {!symbolType && (
                 <>
-                    <p className="text-white-50 fst-italic">
-                        Choose your level
-                    </p>
-
-                    <button className="gamesB" onClick={() => startGame(LEVELS.easy)}>
-                        Easy (6 Cards)
-                    </button>
-
-                    <button className="gamesB ms-3" onClick={() => startGame(LEVELS.medium)}>
-                        Medium (10 Cards)
-                    </button>
-
-                    <button className="gamesB ms-3" onClick={() => startGame(LEVELS.hard)}>
-                        Hard (16 Cards)
-                    </button>
+                    <p className="text-muted">Choose what to play with</p>
+                    <div className="d-flex justify-content-center gap-3">
+                        <button className="btn btn-outline-primary" onClick={() => setSymbolType("numbers")}>
+                            🔢 Numbers
+                        </button>
+                        <button className="btn btn-outline-success" onClick={() => setSymbolType("letters")}>
+                            🔠 Letters
+                        </button>
+                        <button className="btn btn-outline-warning" onClick={() => setSymbolType("faces")}>
+                            😊 Faces
+                        </button>
+                    </div>
                 </>
             )}
 
+            {/* LEVEL CHOICE */}
+            {symbolType && !level && (
+                <>
+                    <p className="text-muted mt-3">Choose difficulty</p>
+                    <div className="d-flex justify-content-center gap-3">
+                        <button className="btn btn-success" onClick={() => startGame(6)}>Easy</button>
+                        <button className="btn btn-warning" onClick={() => startGame(10)}>Medium</button>
+                        <button className="btn btn-danger" onClick={() => startGame(16)}>Hard</button>
+                    </div>
+                </>
+            )}
+
+            {/* GAME BOARD */}
             {level && (
                 <>
-                    <p className="text-white-50 fst-italic">
-                        {hasWon ? "🎉 You matched all cards!" : "Flip two cards to find a match"}
+                    <p className="text-muted mt-3">
+                        {hasWon ? "🎉 You matched all cards!" : "Flip two cards"}
                     </p>
 
-                    <div
-                        className="board"
-                        style={{
-                            gridTemplateColumns: `repeat(${Math.sqrt(level)}, 1fr)`,
-                        }}
-                    >
+                    <div className="row justify-content-center g-3">
                         {cards.map((card, index) => (
-                            <div
-                                key={card.id}
-                                className={`square ${
-                                    flipped.includes(index) || matched.includes(index)
-                                        ? "active"
-                                        : ""
-                                }`}
-                                onClick={() => handleFlip(index)}
-                            >
-                                {flipped.includes(index) || matched.includes(index)
-                                    ? card.value
-                                    : "?"}
+                            <div key={card.id} className="col-4 col-md-3 col-lg-2">
+                                <div
+                                    className={`card shadow text-center ${
+                                        flipped.includes(index) || matched.includes(index)
+                                            ? "border-success"
+                                            : ""
+                                    }`}
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => handleFlip(index)}
+                                >
+                                    <div className="card-body fs-2">
+                                        {flipped.includes(index) || matched.includes(index) ? (
+                                            symbolType === "faces" ? (
+                                                <i className={`fa-solid ${card.value}`}></i>
+                                            ) : (
+                                                card.value
+                                            )
+                                        ) : (
+                                            <i className="fa-solid fa-question"></i>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                         ))}
                     </div>
 
-                    <div className="mt-3">
-                        <button className="gamesB" onClick={() => setLevel(null)}>
+                    {/* CONTROLS */}
+                    <div className="mt-4 d-flex justify-content-center gap-3">
+                        <button className="btn btn-secondary" onClick={() => setLevel(null)}>
                             Change Level
                         </button>
-
-                        <button className="gamesB ms-3" onClick={() => startGame(level)}>
+                        <button className="btn btn-primary" onClick={() => startGame(level)}>
                             Restart
                         </button>
-
-                        <button className="gamesB ms-3" onClick={() => navigate("/TicTacToe")}>
+                        <button className="btn btn-outline-danger" onClick={() => navigate("/TicTacToe")}>
                             Leave
                         </button>
                     </div>

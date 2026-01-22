@@ -13,10 +13,11 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^7.0.1",
+    "@fortawesome/fontawesome-free": "^7.1.0",
     "@headlessui/react": "^2.2.8",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.1",
     "gsap": "^3.13.0",
     "ogl": "^1.0.11",
     "react": "^19.1.1",
