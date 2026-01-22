@@ -115,11 +115,11 @@ function Matching() {
                         {hasWon ? "🎉 You matched all cards!" : "Flip two cards"}
                     </h3>
 
-                    <div className="box  justify-content-center g-3">
+                    <div className="justify-content-center g-3">
                         {cards.map((card, index) => (
                             <div key={card.id} className="col-4 col-md-3 col-lg-2">
                                 <div
-                                    className={`box  shadow text-center ${
+                                    className={`shadow text-center ${
                                         flipped.includes(index) || matched.includes(index)
                                             ? "border-success"
                                             : ""
@@ -127,7 +127,7 @@ function Matching() {
                                     style={{ cursor: "pointer" }}
                                     onClick={() => handleFlip(index)}
                                 >
-                                    <div className="box  fs-2">
+                                    <div className="box fs-2">
                                         {flipped.includes(index) || matched.includes(index) ? (
                                             symbolType === "faces" ? (
                                                 <i className={`fa-solid ${card.value}`}></i>
@@ -147,9 +147,6 @@ function Matching() {
                     <div className="mt-4 d-flex justify-content-center gap-3">
                         <button className="btn" onClick={() => setLevel(null)}>
                             Change Level
-                        </button>
-                        <button className="btn" onClick={() => setSymbolType(null)}>
-                            Change category
                         </button>
                         <button className="btn" onClick={() => startGame(level)}>
                             Restart
