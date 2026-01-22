@@ -10,13 +10,13 @@ import wordleImg from "./assets/wordle.jfif";
 import hangmanImg from "./assets/hangman.jfif";
 import sudokuImg from "./assets/sudoku.jfif";
 import connectFourImg from "./assets/connectfour.jfif";  
-import wordSearchImg from "./assets/wordsearch.jfif";     
-import memoryMatchImg from "./assets/memorymatch.jfif";   
+import memoryMatchImg from "./assets/memorymatch.jfif";
 
 // 🎮 Game data arrays (unique + updated images)
 const gamesList = [
   { img: ticTacToeImg, title: "Tic Tac Toe", desc: "Several X vs O strategy games" },
-  { img: hangmanImg, title: "Hangman", desc: "Save the stick man by guessing letters" },
+  { img: wordleImg, title: "Wordle", desc: "Guess the hidden word in 6 tries" },
+  { img: hangmanImg, title: "Hangman", desc: "Save the stickman by guessing letters" },
   { img: sudokuImg, title: "Sudoku", desc: "Fill the grid with numbers 1-9 logically" },
   { img: connectFourImg, title: "Connect Four", desc: "Line up 4 discs before your opponent" },
   { img: memoryMatchImg, title: "Memory Match", desc: "Match pairs of cards using memory" },

@@ -9,6 +9,8 @@ function Game({ game, modalId }) {
   const gameDescriptions = {
     "Tic Tac Toe":
       "A several grid games where two players take turns marking X or O. The goal is to get the target in a row horizontally, vertically, or diagonally.",
+    "Wordle":
+      "Guess the hidden word within limited tries! After each guess, letters change color to show if they’re correct and in the right spot.",
     "Hangman":
       "Guess the word letter by letter before the stick figure is completed. Every wrong guess adds a part to the gallows!",
     "Sudoku":
