@@ -3,6 +3,7 @@ import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import WordGame from "./games/WordGame";
 import TicTacToe from "./games/TicTacToe";
+import Matching from "./games/Matching";
 
 // ⚡️ Import your future game components
 // (you can replace placeholders with actual game components later)
@@ -20,6 +21,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/WordGame" element={<WordGame key="word-game" />} />
         <Route path="/TicTacToe" element={<TicTacToe key="Tic-Tac-Toe" />} />
+        <Route path="/Matching" element={<Matching key="Matching" />} />
 
         {/* 🎮 Sub-games inside Tic Tac Toe section */}
         <Route path="/ClassicTicTacToe" element={<ClassicTicTacToe />} />
