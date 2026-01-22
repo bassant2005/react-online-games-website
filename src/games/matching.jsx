@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "../styles.css";
 import "../games.css";
+import "./matching.css";
 
 const SYMBOLS = {
     numbers: ["1", "2", "3", "4", "5", "6", "7", "8"],
@@ -80,7 +81,7 @@ function Matching() {
             {/* SYMBOL CHOICE */}
             {!symbolType && (
                 <>
-                    <p className="text-muted">Choose what to play with</p>
+                    <h3>Choose what to play with</h3>
                     <div className="d-flex justify-content-center gap-3">
                         <button className="btn" onClick={() => setSymbolType("numbers")}>
                             🔢 Numbers
@@ -98,7 +99,7 @@ function Matching() {
             {/* LEVEL CHOICE */}
             {symbolType && !level && (
                 <>
-                    <p className="text-muted mt-3">Choose difficulty</p>
+                    <h3>Choose difficulty</h3>
                     <div className="d-flex justify-content-center gap-3">
                         <button className="btn" onClick={() => startGame(6)}>Easy</button>
                         <button className="btn" onClick={() => startGame(10)}>Medium</button>
@@ -110,9 +111,9 @@ function Matching() {
             {/* GAME BOARD */}
             {level && (
                 <>
-                    <p className="text-muted mt-3">
+                    <h3>
                         {hasWon ? "🎉 You matched all cards!" : "Flip two cards"}
-                    </p>
+                    </h3>
 
                     <div className="row justify-content-center g-3">
                         {cards.map((card, index) => (
