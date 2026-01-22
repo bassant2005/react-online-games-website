@@ -142,7 +142,17 @@ function Matching() {
                         <button className="btn" onClick={() => setLevel(null)}>
                             Change Level
                         </button>
-                        <button className="btn" onClick={() => startGame(level)}>
+                        <button
+                            className="btn"
+                            onClick={() => {
+                                // Reset everything including symbolType
+                                setSymbolType(null);
+                                setLevel(null);
+                                setCards([]);
+                                setFlipped([]);
+                                setMatched([]);
+                            }}
+                        >
                             Restart
                         </button>
                         <button className="btn" onClick={() => navigate("/")}>
