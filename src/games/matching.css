@@ -1,7 +1,7 @@
 /* Board layout: auto rows, evenly spaced */
 .memory-board {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    grid-template-columns: repeat(3, 90px); /* 3 cards per row */
     gap: 12px;
     justify-content: center;
     max-width: 420px;
