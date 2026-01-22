@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 import "../styles.css";
 import "../games.css";
 import "./matching.css";
@@ -19,7 +18,7 @@ const SYMBOLS = {
         "O_O",
         ">o<",
         "^_~",
-        "(●'◡'●)"
+        "(●'◡'●)",
     ],
 };
 
@@ -30,22 +29,24 @@ function Matching() {
     const navigate = useNavigate();
 
     const [symbolType, setSymbolType] = useState(null);
-    const [level, setLevel] = useState(null);
+    const [levelIndex, setLevelIndex] = useState(0); // start at Easy
     const [cards, setCards] = useState([]);
     const [flipped, setFlipped] = useState([]);
     const [matched, setMatched] = useState([]);
     const [lockBoard, setLockBoard] = useState(false);
     const [hasWon, setHasWon] = useState(false);
 
-    const startGame = (levelName) => {
-        const size = LEVEL_SIZES[levelName];
-        const values = SYMBOLS[symbolType].slice(0, size / 2);
+    // Start the game for current level
+    const startGame = (symbol, levelIdx) => {
+        const size = LEVEL_SIZES[LEVELS[levelIdx]];
+        const values = SYMBOLS[symbol].slice(0, size / 2);
 
         const deck = [...values, ...values]
             .sort(() => Math.random() - 0.5)
             .map((value, index) => ({ id: index, value }));
 
-        setLevel(levelName);
+        setSymbolType(symbol);
+        setLevelIndex(levelIdx);
         setCards(deck);
         setFlipped([]);
         setMatched([]);
@@ -86,8 +87,7 @@ function Matching() {
             const stored = JSON.parse(localStorage.getItem("games")) || [];
             const gameIndex = stored.findIndex((g) => g.title === "Memory Match");
 
-            const currentLevelIndex = LEVELS.indexOf(level);
-            const progressValue = ((currentLevelIndex + 1) * 25);
+            const progressValue = ((levelIndex + 1) * 25);
 
             if (gameIndex >= 0) {
                 stored[gameIndex] = {
@@ -108,102 +108,56 @@ function Matching() {
             window.dispatchEvent(new Event("gamesUpdated"));
 
             // Auto-unlock next level if exists
-            if (currentLevelIndex < LEVELS.length - 1) {
+            if (levelIndex < LEVELS.length - 1) {
                 setTimeout(() => {
-                    startGame(LEVELS[currentLevelIndex + 1]);
+                    startGame(symbolType, levelIndex + 1);
                 }, 1500); // small delay before next level
             }
         }
     }, [matched]);
 
+    // Start the first level automatically
+    useEffect(() => {
+        if (!symbolType) {
+            setSymbolType("numbers"); // default choice at start
+            startGame("numbers", 0); // Easy level
+        }
+    }, []);
+
     return (
         <div className="container text-center mt-4">
             <h3>🧠 Memory Matching Game</h3>
 
-            {/* SYMBOL CHOICE */}
-            {!symbolType && (
-                <>
-                    <h3>Choose what to play with</h3>
-                    <div className="d-flex justify-content-center gap-3">
-                        <button className="btn" onClick={() => setSymbolType("numbers")}>
-                            🔢 Numbers
-                        </button>
-                        <button className="btn" onClick={() => setSymbolType("letters")}>
-                            🔠 Letters
-                        </button>
-                        <button className="btn" onClick={() => setSymbolType("faces")}>
-                            😊 Faces
-                        </button>
-                    </div>
-                </>
-            )}
+            <h3>{hasWon ? `🎉 Level Complete!` : `Flip two cards - ${LEVELS[levelIndex]}`}</h3>
 
-            {/* LEVEL CHOICE */}
-            {symbolType && !level && (
-                <>
-                    <h3>Choose difficulty</h3>
-                    <div className="d-flex justify-content-center gap-3">
-                        {LEVELS.map((lvl) => (
-                            <button className="btn" key={lvl} onClick={() => startGame(lvl)}>
-                                {lvl}
-                            </button>
-                        ))}
-                    </div>
-                </>
-            )}
-
-            {/* GAME BOARD */}
-            {level && (
-                <>
-                    <h3>
-                        {hasWon ? "🎉 Level Complete!" : `Flip two cards - ${level}`}
-                    </h3>
-                    <div className="memory-board">
-                        {cards.map((card, index) => (
-                            <div key={card.id}>
-                                <div
-                                    className={`square ${
-                                        flipped.includes(index) || matched.includes(index)
-                                            ? "active"
-                                            : ""
-                                    }`}
-                                    onClick={() => handleFlip(index)}
-                                >
-                                    {(flipped.includes(index) || matched.includes(index)) &&
-                                        (symbolType === "faces" ? (
-                                            <i className={`fa-solid ${card.value}`}></i>
-                                        ) : (
-                                            card.value
-                                        ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* CONTROLS */}
-                    <div className="mt-4 mb-4 d-flex justify-content-center gap-3">
-                        <button className="btn" onClick={() => setLevel(null)}>
-                            Change Level
-                        </button>
-                        <button
-                            className="btn"
-                            onClick={() => {
-                                setSymbolType(null);
-                                setLevel(null);
-                                setCards([]);
-                                setFlipped([]);
-                                setMatched([]);
-                                setHasWon(false);
-                            }}
+            <div className="memory-board">
+                {cards.map((card, index) => (
+                    <div key={card.id}>
+                        <div
+                            className={`square ${flipped.includes(index) || matched.includes(index) ? "active" : ""}`}
+                            onClick={() => handleFlip(index)}
                         >
-                            Restart
-                        </button>
-                        <button className="btn" onClick={() => navigate("/")}>
-                            Leave
-                        </button>
+                            {(flipped.includes(index) || matched.includes(index)) && card.value}
+                        </div>
                     </div>
-                </>
-            )}
+                ))}
+            </div>
+
+            {/* CONTROLS */}
+            <div className="mt-4 mb-4 d-flex justify-content-center gap-3">
+                <button
+                    className="btn"
+                    onClick={() => startGame(symbolType, levelIndex)} // restart current level
+                >
+                    Restart Level
+                </button>
+                <button
+                    className="btn"
+                    onClick={() => navigate("/")}
+                >
+                    Leave
+                </button>
+            </div>
         </div>
     );
 }
