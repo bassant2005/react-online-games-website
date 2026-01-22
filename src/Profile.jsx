@@ -67,7 +67,10 @@ function Profile() {
       fullPath = `${window.location.origin}/react-online-games-website/#/WordGame`; 
     }
     else if(gameTitle === "Tic Tac Toe"){
-      fullPath = `${window.location.origin}/react-online-games-website/#/TicTacToe`; 
+      fullPath = `${window.location.origin}/react-online-games-website/#/TicTacToe`;
+    }
+    else if(gameTitle === "Memory Match"){
+      fullPath = `${window.location.origin}/react-online-games-website/#/Matching`;
     }
     window.open(fullPath);
   };
