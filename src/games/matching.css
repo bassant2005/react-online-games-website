@@ -30,7 +30,3 @@
     box-shadow: 0 0 12px rgba(0, 150, 255, 0.6);
 }
 
-/* Faces (Font Awesome) */
-.memory-board i {
-    color: var(--navy-color);
-}
