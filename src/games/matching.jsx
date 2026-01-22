@@ -6,19 +6,19 @@ import "../games.css";
 import "./matching.css";
 
 const SYMBOLS = {
-    numbers: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-    letters: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"],
+    numbers: ["10", "11", "100", "111", "101", "010", "0", "0110", "1111", "1001"],
+    letters: ["N", "M", "C", "D", "R", "U", "G", "O", "V", "W"],
     faces: [
-        "U_U",
-        ">_<",
-        ">.<",
-        "UwU",
-        "^_^",
-        "T_T",
-        "O_O",
-        ">o<",
-        "^_~",
-        "(●'◡'●)",
+        "❤️",
+        "⚽",
+        "🎶",
+        "🤖",
+        "🦋",
+        "🎈",
+        "📙",
+        "🍕",
+        "🍎",
+        "🚗",
     ],
 };
 
@@ -28,16 +28,16 @@ const LEVEL_SIZES = { Easy: 6, Medium: 10, Hard: 16, Expert: 20 };
 function Matching() {
     const navigate = useNavigate();
 
-    const [symbolType, setSymbolType] = useState(null);
-    const [levelIndex, setLevelIndex] = useState(0); // start at Easy
+    const [symbolType, setSymbolType] = useState(null); // ⬅️ ask user
+    const [levelIndex, setLevelIndex] = useState(0);
     const [cards, setCards] = useState([]);
     const [flipped, setFlipped] = useState([]);
     const [matched, setMatched] = useState([]);
     const [lockBoard, setLockBoard] = useState(false);
     const [hasWon, setHasWon] = useState(false);
 
-    // Start the game for current level
-    const startGame = (symbol, levelIdx) => {
+    // 🎮 Start game
+    const startGame = (symbol, levelIdx = 0) => {
         const size = LEVEL_SIZES[LEVELS[levelIdx]];
         const values = SYMBOLS[symbol].slice(0, size / 2);
 
@@ -78,22 +78,21 @@ function Matching() {
         }
     };
 
-    // Check for win
+    // 🏆 Win logic + progress
     useEffect(() => {
         if (cards.length > 0 && matched.length === cards.length) {
             setHasWon(true);
 
-            // Update progress in localStorage
             const stored = JSON.parse(localStorage.getItem("games")) || [];
             const gameIndex = stored.findIndex((g) => g.title === "Memory Match");
 
-            const progressValue = ((levelIndex + 1) * 25);
+            const progressValue = (levelIndex + 1) * 25;
 
             if (gameIndex >= 0) {
-                stored[gameIndex] = {
-                    ...stored[gameIndex],
-                    progress: Math.max(stored[gameIndex].progress, progressValue),
-                };
+                stored[gameIndex].progress = Math.max(
+                    stored[gameIndex].progress,
+                    progressValue
+                );
             } else {
                 stored.push({
                     title: "Memory Match",
@@ -107,57 +106,95 @@ function Matching() {
             localStorage.setItem("games", JSON.stringify(stored));
             window.dispatchEvent(new Event("gamesUpdated"));
 
-            // Auto-unlock next level if exists
+            // 🔓 Unlock next level
             if (levelIndex < LEVELS.length - 1) {
                 setTimeout(() => {
                     startGame(symbolType, levelIndex + 1);
-                }, 1500); // small delay before next level
+                }, 1500);
             }
         }
     }, [matched]);
 
-    // Start the first level automatically
-    useEffect(() => {
-        if (!symbolType) {
-            setSymbolType("numbers"); // default choice at start
-            startGame("numbers", 0); // Easy level
+    // 🔁 FULL RESET
+    const restartGame = () => {
+        // reset progress to 0
+        const stored = JSON.parse(localStorage.getItem("games")) || [];
+        const gameIndex = stored.findIndex((g) => g.title === "Memory Match");
+
+        if (gameIndex >= 0) {
+            stored[gameIndex].progress = 0;
+            localStorage.setItem("games", JSON.stringify(stored));
+            window.dispatchEvent(new Event("gamesUpdated"));
         }
-    }, []);
+
+        setSymbolType(null); // ⬅️ re-ask symbols
+        setLevelIndex(0);
+        setCards([]);
+        setFlipped([]);
+        setMatched([]);
+        setHasWon(false);
+    };
 
     return (
         <div className="container text-center mt-4">
             <h3>🧠 Memory Matching Game</h3>
 
-            <h3>{hasWon ? `🎉 Level Complete!` : `Flip two cards - ${LEVELS[levelIndex]}`}</h3>
-
-            <div className="memory-board">
-                {cards.map((card, index) => (
-                    <div key={card.id}>
-                        <div
-                            className={`square ${flipped.includes(index) || matched.includes(index) ? "active" : ""}`}
-                            onClick={() => handleFlip(index)}
-                        >
-                            {(flipped.includes(index) || matched.includes(index)) && card.value}
-                        </div>
+            {/* 🔢 SYMBOL CHOICE */}
+            {!symbolType && (
+                <>
+                    <h4>Choose what you want to play with</h4>
+                    <div className="d-flex justify-content-center gap-3 mt-3">
+                        <button className="btn" onClick={() => startGame("numbers")}>
+                            🔢 Numbers
+                        </button>
+                        <button className="btn" onClick={() => startGame("letters")}>
+                            🔠 Letters
+                        </button>
+                        <button className="btn" onClick={() => startGame("faces")}>
+                            😊 Faces
+                        </button>
                     </div>
-                ))}
-            </div>
+                </>
+            )}
 
-            {/* CONTROLS */}
-            <div className="mt-4 mb-4 d-flex justify-content-center gap-3">
-                <button
-                    className="btn"
-                    onClick={() => startGame(symbolType, levelIndex)} // restart current level
-                >
-                    Restart Level
-                </button>
-                <button
-                    className="btn"
-                    onClick={() => navigate("/")}
-                >
-                    Leave
-                </button>
-            </div>
+            {/* 🧩 GAME */}
+            {symbolType && (
+                <>
+                    <h3>
+                        {hasWon
+                            ? "🎉 Level Complete!"
+                            : `Flip two cards - ${LEVELS[levelIndex]}`}
+                    </h3>
+
+                    <div className="memory-board">
+                        {cards.map((card, index) => (
+                            <div key={card.id}>
+                                <div
+                                    className={`square ${
+                                        flipped.includes(index) || matched.includes(index)
+                                            ? "active"
+                                            : ""
+                                    }`}
+                                    onClick={() => handleFlip(index)}
+                                >
+                                    {(flipped.includes(index) || matched.includes(index)) &&
+                                        card.value}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* 🎛 CONTROLS */}
+                    <div className="mt-4 mb-4 d-flex justify-content-center gap-3">
+                        <button className="btn" onClick={restartGame}>
+                            Restart Game
+                        </button>
+                        <button className="btn" onClick={() => navigate("/")}>
+                            Leave
+                        </button>
+                    </div>
+                </>
+            )}
         </div>
     );
 }
