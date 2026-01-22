@@ -5,7 +5,7 @@ import "../games.css";
 import "./tictactoe.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useProgress from "./XOprogress";
+import useProgress from "./progress.jsx";
 
 import ticTacToeImg from "../assets/tic tac toe.png";
 import reversxoImg from "../assets/xo.png";

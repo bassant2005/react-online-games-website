@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./tictactoe.css";
-import useProgress from "./XOprogress";
+import useProgress from "./progress.jsx";
 import { useNavigate } from "react-router-dom";
 
 // ---------- Board Setup ----------

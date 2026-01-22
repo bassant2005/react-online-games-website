@@ -1,4 +1,4 @@
-// XOprogress.js
+// progress.js
 import { useState, useEffect } from "react";
 
 export default function useProgress() {
