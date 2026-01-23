@@ -230,6 +230,7 @@ function WordGame() {
               <button className="gamesB" onClick={() => startLevel(currentLevel, true)}>Restart</button>
               <button className="gamesB" onClick={() => navigate("/")}>Leave</button>
             </div>
+            <br/><br/>
             <div className="inputs">
               {inputs.map((tryRow, tryIndex) => (
                   <div key={tryIndex} className={`try ${currentTry - 1 === tryIndex ? "" : "disabled"}`}>
