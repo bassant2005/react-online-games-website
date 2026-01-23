@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./tictactoe.css";
 import { useNavigate } from "react-router-dom";
 import useSound from "use-sound";
-import playerMoveSound from "../assets/sounds/move.mp3";
-import computerMoveSound from "../assets/sounds/computer.mp3";
+import moveSound from "../assets/sounds/move.mp3";
+import computerSound from "../assets/sounds/computer.mp3";
 import winSound from "../assets/sounds/win.wav";
 import loseSound from "../assets/sounds/lose.wav";
 
@@ -19,9 +19,12 @@ function Sus() {
   const playerLetter = "S";
   const opponentLetter = "U";
 
-  // Sounds
-  const [playPlayer] = useSound(playerMoveSound);
-  const [playComputer] = useSound(computerMoveSound);
+  // 🔇 MUTE
+  const [muted, setMuted] = useState(false);
+
+  // 🔊 SOUND EFFECTS
+  const [playMove] = useSound(moveSound);
+  const [playComputer] = useSound(computerSound);
   const [playWin] = useSound(winSound);
   const [playLose] = useSound(loseSound);
 
@@ -56,7 +59,7 @@ function Sus() {
     const newBoard = [...board];
     newBoard[index] = playerLetter;
     setBoard(newBoard);
-    playPlayer();
+    playMove();
     checkSUS(newBoard, index, playerLetter);
     setIsPlayerTurn(false);
   };
@@ -139,6 +142,13 @@ function Sus() {
   return (
       <div className="tic-container text-center mt-4">
         <h3>SuS Tic Tac Toe ({mode === "random" ? "Easy Mode" : "Hard Mode"})</h3>
+        {/* 🔇 MUTE BUTTON */}
+        <button
+            className="btn btn-sm mb-3"
+            onClick={() => setMuted(!muted)}
+        >
+          {muted ? "🔇 Muted" : "🔊 Sound On"}
+        </button>
         <p className="text-white-50 fst-italic">
           {winner
               ? winner === "tie" ? "It's a Draw!" :

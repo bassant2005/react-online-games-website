@@ -90,9 +90,12 @@ export default function PyramidTicTacToe() {
   const [turn, setTurn] = useState("X");
   const [mode, setMode] = useState("random");
   const [winner, setWinner] = useState(null);
+
   const navigate = useNavigate();
 
-  // Sounds
+  // 🔇 MUTE
+  const [muted, setMuted] = useState(false);
+
   const [playPlayer] = useSound(playerMoveSound);
   const [playComputer] = useSound(computerMoveSound);
   const [playWin] = useSound(winSound);
@@ -165,6 +168,13 @@ export default function PyramidTicTacToe() {
   return (
       <div className="pyramid tic-container">
         <h3>Pyramid Tic Tac Toe ({mode === "random" ? "Easy Mode" : "Hard Mode"})</h3>
+        {/* 🔇 MUTE BUTTON */}
+        <button
+            className="btn btn-sm mb-3"
+            onClick={() => setMuted(!muted)}
+        >
+          {muted ? "🔇 Muted" : "🔊 Sound On"}
+        </button>
         <p className="text-white-50 fst-italic">
           {winner
               ? winner === "draw"

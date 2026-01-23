@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useSound from "use-sound";
-
+import moveSound from "../assets/sounds/move.mp3";
+import hintSound from "../assets/sounds/help.wav";
+import winSound from "../assets/sounds/win.wav";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles.css";
 import "../games.css";
@@ -33,24 +35,13 @@ function Matching() {
     const [hasWon, setHasWon] = useState(false);
     const [helpsLeft, setHelpsLeft] = useState(0);
 
-    // 🔇 MUTE STATE
+    // 🔇 MUTE
     const [muted, setMuted] = useState(false);
 
     // 🔊 SOUND EFFECTS
-    const [playFlip] = useSound("/sounds/move.mp3", {
-        volume: 0.5,
-        soundEnabled: !muted,
-    });
-
-    const [playHelp] = useSound("/sounds/help.wav", {
-        volume: 0.6,
-        soundEnabled: !muted,
-    });
-
-    const [playWin] = useSound("/sounds/win.wav", {
-        volume: 0.7,
-        soundEnabled: !muted,
-    });
+    const [playMove] = useSound(moveSound);
+    const [playHint] = useSound(hintSound);
+    const [playWin] = useSound(winSound);
 
     // 🎮 START GAME
     const startGame = (symbol, levelIdx = 0) => {
@@ -77,7 +68,7 @@ function Matching() {
         if (lockBoard) return;
         if (flipped.includes(index) || matched.includes(index)) return;
 
-        playFlip();
+        playMove();
 
         const newFlipped = [...flipped, index];
         setFlipped(newFlipped);
@@ -103,7 +94,7 @@ function Matching() {
     const useHelp = () => {
         if (helpsLeft === 0) return;
 
-        playHelp();
+        playHint();
 
         const unmatchedIndexes = cards
             .map((_, i) => (matched.includes(i) ? null : i))

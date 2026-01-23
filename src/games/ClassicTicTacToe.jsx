@@ -3,6 +3,10 @@ import "./tictactoe.css";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import useSound from "use-sound";
+import moveSound from "../assets/sounds/move.mp3";
+import computerSound from "../assets/sounds/computer.mp3";
+import winSound from "../assets/sounds/win.wav";
+import loseSound from "../assets/sounds/lose.wav";
 
 function ClassicTicTacToe() {
   const [board, setBoard] = useState(Array(9).fill(null));
@@ -16,25 +20,10 @@ function ClassicTicTacToe() {
   const navigate = useNavigate();
 
   // 🔊 SOUND EFFECTS
-  const [playPlayerMove] = useSound("/sounds/move.mp3", {
-    volume: 0.5,
-    soundEnabled: !muted,
-  });
-
-  const [playComputerMove] = useSound("/sounds/computer.mp3", {
-    volume: 0.5,
-    soundEnabled: !muted,
-  });
-
-  const [playWin] = useSound("/sounds/win.wav", {
-    volume: 0.7,
-    soundEnabled: !muted,
-  });
-
-  const [playLose] = useSound("/sounds/lose.wav", {
-    volume: 0.7,
-    soundEnabled: !muted,
-  });
+  const [playMove] = useSound(moveSound);
+  const [playComputer] = useSound(computerSound);
+  const [playWin] = useSound(winSound);
+  const [playLose] = useSound(loseSound);
 
   // 🎯 Winning patterns
   const winningCombos = [
@@ -89,7 +78,7 @@ function ClassicTicTacToe() {
           const newBoard = [...board];
           newBoard[moveIndex] = "O";
 
-          playComputerMove(); // 🤖 sound
+          playComputer(); // 🤖 sound
           setBoard(newBoard);
           setIsPlayerTurn(true);
         }
@@ -103,7 +92,7 @@ function ClassicTicTacToe() {
   const handleClick = (index) => {
     if (board[index] || winner || !isPlayerTurn) return;
 
-    playPlayerMove(); // 🧍 sound
+    playMove(); // 🧍 sound
 
     const newBoard = [...board];
     newBoard[index] = "X";

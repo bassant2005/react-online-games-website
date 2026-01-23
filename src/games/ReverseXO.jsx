@@ -20,7 +20,9 @@ function ReverseXO() {
     [0,4,8],[2,4,6]
   ];
 
-  // Sounds
+  // 🔇 MUTE
+  const [muted, setMuted] = useState(false);
+
   const [playPlayer] = useSound(playerMoveSound);
   const [playComputer] = useSound(computerMoveSound);
   const [playWin] = useSound(winSound);
@@ -131,6 +133,13 @@ function ReverseXO() {
   return (
       <div className="tic-container text-center mt-4">
         <h3>Misère Tic Tac Toe ({aiMode ? "Hard Mode" : "Easy Mode"})</h3>
+        {/* 🔇 MUTE BUTTON */}
+        <button
+            className="btn btn-sm mb-3"
+            onClick={() => setMuted(!muted)}
+        >
+          {muted ? "🔇 Muted" : "🔊 Sound On"}
+        </button>
         <p className="text-white-50 fst-italic">
           {winner
               ? winner === "draw" ? "It's a Draw!" :

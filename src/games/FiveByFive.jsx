@@ -3,6 +3,10 @@ import "./tictactoe.css";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import useSound from "use-sound";
+import moveSound from "../assets/sounds/move.mp3";
+import computerSound from "../assets/sounds/computer.mp3";
+import winSound from "../assets/sounds/win.wav";
+import loseSound from "../assets/sounds/lose.wav";
 
 function FiveByFive() {
   const [board, setBoard] = useState(Array(25).fill(null));
@@ -15,26 +19,11 @@ function FiveByFive() {
 
   const navigate = useNavigate();
 
-  // 🔊 SOUNDS
-  const [playPlayerMove] = useSound("/sounds/move.mp3", {
-    volume: 0.5,
-    soundEnabled: !muted,
-  });
-
-  const [playComputerMove] = useSound("/sounds/computer.mp3", {
-    volume: 0.5,
-    soundEnabled: !muted,
-  });
-
-  const [playWin] = useSound("/sounds/win.wav", {
-    volume: 0.7,
-    soundEnabled: !muted,
-  });
-
-  const [playLose] = useSound("/sounds/lose.wav", {
-    volume: 0.7,
-    soundEnabled: !muted,
-  });
+  // 🔊 SOUND EFFECTS
+  const [playMove] = useSound(moveSound);
+  const [playComputer] = useSound(computerSound);
+  const [playWin] = useSound(winSound);
+  const [playLose] = useSound(loseSound);
 
   // ---------------- CHECK WINNER ----------------
   const checkWinner = (b) => {
@@ -167,7 +156,7 @@ function FiveByFive() {
           const newBoard = [...board];
           newBoard[moveIndex] = "O";
 
-          playComputerMove(); // 🤖
+          playComputer(); // 🤖
           setBoard(newBoard);
           setIsPlayerTurn(true);
         }
@@ -181,7 +170,7 @@ function FiveByFive() {
   const handleClick = (index) => {
     if (board[index] || winner || !isPlayerTurn) return;
 
-    playPlayerMove(); // 🧍
+    playMove(); // 🧍
 
     const newBoard = [...board];
     newBoard[index] = "X";

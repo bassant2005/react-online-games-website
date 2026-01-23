@@ -55,6 +55,9 @@ function WordGame() {
   const [playWin] = useSound(winSound);
   const [playLose] = useSound(loseSound);
 
+  // 🔇 MUTE
+  const [muted, setMuted] = useState(false);
+
   // ---------------- START LEVEL ----------------
   const startLevel = (levelIndex, resetProgress = false) => {
     if (resetProgress) {
@@ -204,6 +207,13 @@ function WordGame() {
   return (
       <div className="guess-game">
         <h1>{gameName} ✍</h1>
+        {/* 🔇 MUTE BUTTON */}
+        <button
+            className="btn btn-sm mb-3"
+            onClick={() => setMuted(!muted)}
+        >
+          {muted ? "🔇 Muted" : "🔊 Sound On"}
+        </button>
         <div className="game-area">
           <div className="message">
             <span>{message}</span><br /><br />
