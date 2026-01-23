@@ -252,8 +252,8 @@ function WordGame() {
               <div className="control d-flex">
                 <button className="gamesB" onClick={handleCheck}>Check Word</button>
                 <button className="gamesB" onClick={handleHint} disabled={hintsLeft === 0}>Hint ({hintsLeft})</button>
-                <button className="gamesB" onClick={handleTryAgain}>Try Again</button>
               </div>
+              <button className="gamesB" onClick={handleTryAgain}>Try Again</button>
               <div className="control d-flex">
                 <button className="gamesB" onClick={() => startLevel(currentLevel, true)}>Restart</button>
                 <button className="gamesB" onClick={() => navigate("/")}>Leave</button>
