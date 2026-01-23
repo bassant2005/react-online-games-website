@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import useSound from "use-sound";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles.css";
 import "../games.css";
@@ -31,14 +33,31 @@ function Matching() {
     const [hasWon, setHasWon] = useState(false);
     const [helpsLeft, setHelpsLeft] = useState(0);
 
-    // 🎮 Start game
+    // 🔇 MUTE STATE
+    const [muted, setMuted] = useState(false);
+
+    // 🔊 SOUND EFFECTS
+    const [playFlip] = useSound("/sounds/move.mp3", {
+        volume: 0.5,
+        soundEnabled: !muted,
+    });
+
+    const [playHelp] = useSound("/sounds/help.wav", {
+        volume: 0.6,
+        soundEnabled: !muted,
+    });
+
+    const [playWin] = useSound("/sounds/win.wav", {
+        volume: 0.7,
+        soundEnabled: !muted,
+    });
+
+    // 🎮 START GAME
     const startGame = (symbol, levelIdx = 0) => {
         const levelName = LEVELS[levelIdx];
         const size = LEVEL_SIZES[levelName];
 
-        // 🔀 RANDOM symbols every game
         const randomSymbols = shuffleArray(SYMBOLS[symbol]).slice(0, size / 2);
-
         const deck = shuffleArray([...randomSymbols, ...randomSymbols]).map(
             (value, index) => ({ id: index, value })
         );
@@ -53,9 +72,12 @@ function Matching() {
         setHelpsLeft(LEVEL_HELPS[levelName]);
     };
 
+    // 🎴 CARD FLIP
     const handleFlip = (index) => {
         if (lockBoard) return;
         if (flipped.includes(index) || matched.includes(index)) return;
+
+        playFlip();
 
         const newFlipped = [...flipped, index];
         setFlipped(newFlipped);
@@ -77,12 +99,14 @@ function Matching() {
         }
     };
 
-    // 🆘 HELP → solve one random pair
+    // 🆘 HELP
     const useHelp = () => {
         if (helpsLeft === 0) return;
 
+        playHelp();
+
         const unmatchedIndexes = cards
-            .map((c, i) => (matched.includes(i) ? null : i))
+            .map((_, i) => (matched.includes(i) ? null : i))
             .filter((i) => i !== null);
 
         if (unmatchedIndexes.length < 2) return;
@@ -96,9 +120,10 @@ function Matching() {
         setHelpsLeft((prev) => prev - 1);
     };
 
-    // 🏆 Win logic + progress
+    // 🏆 WIN LOGIC
     useEffect(() => {
         if (cards.length > 0 && matched.length === cards.length) {
+            playWin();
             setHasWon(true);
 
             const stored = JSON.parse(localStorage.getItem("games")) || [];
@@ -123,14 +148,13 @@ function Matching() {
             localStorage.setItem("games", JSON.stringify(stored));
             window.dispatchEvent(new Event("gamesUpdated"));
 
-            // 🔓 Next level
             if (levelIndex < LEVELS.length - 1) {
                 setTimeout(() => startGame(symbolType, levelIndex + 1), 1500);
             }
         }
     }, [matched]);
 
-    // 🔁 Restart everything
+    // 🔁 RESTART
     const restartGame = () => {
         const stored = JSON.parse(localStorage.getItem("games")) || [];
         const gameIndex = stored.findIndex((g) => g.title === "Memory Match");
@@ -153,6 +177,14 @@ function Matching() {
         <div className="container text-center mt-4">
             <h3>🧠 Memory Matching Game</h3>
 
+            {/* 🔇 MUTE BUTTON */}
+            <button
+                className="btn btn-sm mb-3"
+                onClick={() => setMuted(!muted)}
+            >
+                {muted ? "🔇 Muted" : "🔊 Sound On"}
+            </button>
+
             {!symbolType && (
                 <>
                     <h3>Choose what you want to play with</h3>
@@ -173,10 +205,15 @@ function Matching() {
                         {cards.map((card, index) => (
                             <div key={card.id}>
                                 <div
-                                    className={`square ${flipped.includes(index) || matched.includes(index) ? "active" : ""}`}
+                                    className={`square ${
+                                        flipped.includes(index) || matched.includes(index)
+                                            ? "active"
+                                            : ""
+                                    }`}
                                     onClick={() => handleFlip(index)}
                                 >
-                                    {(flipped.includes(index) || matched.includes(index)) && card.value}
+                                    {(flipped.includes(index) || matched.includes(index)) &&
+                                        card.value}
                                 </div>
                             </div>
                         ))}

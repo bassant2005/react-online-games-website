@@ -2,13 +2,39 @@ import React, { useState, useEffect } from "react";
 import "./tictactoe.css";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import useSound from "use-sound";
 
 function FiveByFive() {
-  const [board, setBoard] = useState(Array(25).fill(null)); // 5x5 board
+  const [board, setBoard] = useState(Array(25).fill(null));
   const [isPlayerTurn, setIsPlayerTurn] = useState(true);
   const [winner, setWinner] = useState(null);
-  const [aiMode, setAiMode] = useState(false); // 🚀 start with easy mode
+  const [aiMode, setAiMode] = useState(false);
+
+  // 🔇 MUTE
+  const [muted, setMuted] = useState(false);
+
   const navigate = useNavigate();
+
+  // 🔊 SOUNDS
+  const [playPlayerMove] = useSound("/sounds/player-move.mp3", {
+    volume: 0.5,
+    soundEnabled: !muted,
+  });
+
+  const [playComputerMove] = useSound("/sounds/computer-move.mp3", {
+    volume: 0.5,
+    soundEnabled: !muted,
+  });
+
+  const [playWin] = useSound("/sounds/win.mp3", {
+    volume: 0.7,
+    soundEnabled: !muted,
+  });
+
+  const [playLose] = useSound("/sounds/lose.mp3", {
+    volume: 0.7,
+    soundEnabled: !muted,
+  });
 
   // ---------------- CHECK WINNER ----------------
   const checkWinner = (b) => {
@@ -18,13 +44,11 @@ function FiveByFive() {
       for (let row = 0; row < 5; row++) {
         for (let col = 0; col <= 1; col++) {
           if (
-            b[row * 5 + col] === currentPlayer &&
-            b[row * 5 + col] === b[row * 5 + col + 1] &&
-            b[row * 5 + col] === b[row * 5 + col + 2] &&
-            b[row * 5 + col] === b[row * 5 + col + 3]
-          ) {
-            return currentPlayer;
-          }
+              b[row * 5 + col] === currentPlayer &&
+              b[row * 5 + col] === b[row * 5 + col + 1] &&
+              b[row * 5 + col] === b[row * 5 + col + 2] &&
+              b[row * 5 + col] === b[row * 5 + col + 3]
+          ) return currentPlayer;
         }
       }
 
@@ -32,13 +56,11 @@ function FiveByFive() {
       for (let col = 0; col < 5; col++) {
         for (let row = 0; row <= 1; row++) {
           if (
-            b[row * 5 + col] === currentPlayer &&
-            b[row * 5 + col] === b[(row + 1) * 5 + col] &&
-            b[row * 5 + col] === b[(row + 2) * 5 + col] &&
-            b[row * 5 + col] === b[(row + 3) * 5 + col]
-          ) {
-            return currentPlayer;
-          }
+              b[row * 5 + col] === currentPlayer &&
+              b[row * 5 + col] === b[(row + 1) * 5 + col] &&
+              b[row * 5 + col] === b[(row + 2) * 5 + col] &&
+              b[row * 5 + col] === b[(row + 3) * 5 + col]
+          ) return currentPlayer;
         }
       }
 
@@ -46,13 +68,11 @@ function FiveByFive() {
       for (let row = 0; row <= 1; row++) {
         for (let col = 0; col <= 1; col++) {
           if (
-            b[row * 5 + col] === currentPlayer &&
-            b[row * 5 + col] === b[(row + 1) * 5 + (col + 1)] &&
-            b[row * 5 + col] === b[(row + 2) * 5 + (col + 2)] &&
-            b[row * 5 + col] === b[(row + 3) * 5 + (col + 3)]
-          ) {
-            return currentPlayer;
-          }
+              b[row * 5 + col] === currentPlayer &&
+              b[row * 5 + col] === b[(row + 1) * 5 + (col + 1)] &&
+              b[row * 5 + col] === b[(row + 2) * 5 + (col + 2)] &&
+              b[row * 5 + col] === b[(row + 3) * 5 + (col + 3)]
+          ) return currentPlayer;
         }
       }
 
@@ -60,78 +80,66 @@ function FiveByFive() {
       for (let row = 0; row <= 1; row++) {
         for (let col = 3; col < 5; col++) {
           if (
-            b[row * 5 + col] === currentPlayer &&
-            b[row * 5 + col] === b[(row + 1) * 5 + (col - 1)] &&
-            b[row * 5 + col] === b[(row + 2) * 5 + (col - 2)] &&
-            b[row * 5 + col] === b[(row + 3) * 5 + (col - 3)]
-          ) {
-            return currentPlayer;
-          }
+              b[row * 5 + col] === currentPlayer &&
+              b[row * 5 + col] === b[(row + 1) * 5 + (col - 1)] &&
+              b[row * 5 + col] === b[(row + 2) * 5 + (col - 2)] &&
+              b[row * 5 + col] === b[(row + 3) * 5 + (col - 3)]
+          ) return currentPlayer;
         }
       }
     }
     return null;
   };
 
-  // ---------------- EVALUATE BOARD ----------------
-  const evaluateBoard = (b, depth) => {
-    const result = checkWinner(b);
-    if (result === "O") return 1000 - depth; // AI wins
-    if (result === "X") return -1000 + depth; // Player wins
-    return 0;
-  };
-
-  // ---------------- DRAW CHECK ----------------
   const isDraw = (b) => b.every((cell) => cell !== null);
 
-  // ---------------- MINIMAX WITH ALPHA-BETA ----------------
-  const minimax = (b, depth, isMaximizing, alpha, beta) => {
-    const winnerCheck = checkWinner(b);
-    if (winnerCheck || isDraw(b) || depth === 0) {
-      return evaluateBoard(b, depth);
-    }
+  // ---------------- MINIMAX ----------------
+  const minimax = (b, depth, isMax, alpha, beta) => {
+    const result = checkWinner(b);
+    if (result === "O") return 1000 - depth;
+    if (result === "X") return -1000 + depth;
+    if (isDraw(b) || depth === 0) return 0;
 
     const emptySquares = b
-      .map((val, idx) => (val === null ? idx : null))
-      .filter((val) => val !== null);
+        .map((val, idx) => (val === null ? idx : null))
+        .filter((val) => val !== null);
 
-    if (isMaximizing) {
+    if (isMax) {
       let maxEval = -Infinity;
       for (let move of emptySquares) {
-        b[move] = "O"; // AI move
+        b[move] = "O";
         const evalScore = minimax(b, depth - 1, false, alpha, beta);
         b[move] = null;
         maxEval = Math.max(maxEval, evalScore);
         alpha = Math.max(alpha, evalScore);
-        if (beta <= alpha) break; // prune
+        if (beta <= alpha) break;
       }
       return maxEval;
     } else {
       let minEval = Infinity;
       for (let move of emptySquares) {
-        b[move] = "X"; // Player move
+        b[move] = "X";
         const evalScore = minimax(b, depth - 1, true, alpha, beta);
         b[move] = null;
         minEval = Math.min(minEval, evalScore);
         beta = Math.min(beta, evalScore);
-        if (beta <= alpha) break; // prune
+        if (beta <= alpha) break;
       }
       return minEval;
     }
   };
 
-  // ---------------- BEST MOVE ----------------
   const smartMove = (currentBoard) => {
     let bestValue = -Infinity;
     let bestMove = null;
 
     const emptySquares = currentBoard
-      .map((val, idx) => (val === null ? idx : null))
-      .filter((val) => val !== null);
+        .map((val, idx) => (val === null ? idx : null))
+        .filter((val) => val !== null);
 
     for (let move of emptySquares) {
       currentBoard[move] = "O";
-      const moveValue = minimax(currentBoard, 4, false, -Infinity, Infinity); // depth=4
+      const moveValue = minimax(currentBoard, 4, false, -Infinity, Infinity);
       currentBoard[move] = null;
 
       if (moveValue > bestValue) {
@@ -140,9 +148,7 @@ function FiveByFive() {
       }
     }
 
-    return bestMove !== null
-      ? bestMove
-      : emptySquares[Math.floor(Math.random() * emptySquares.length)];
+    return bestMove ?? emptySquares[Math.floor(Math.random() * emptySquares.length)];
   };
 
   // ---------------- COMPUTER MOVE ----------------
@@ -150,44 +156,51 @@ function FiveByFive() {
     if (!isPlayerTurn && !winner) {
       const timeout = setTimeout(() => {
         const emptySquares = board
-          .map((val, idx) => (val === null ? idx : null))
-          .filter((val) => val !== null);
+            .map((val, idx) => (val === null ? idx : null))
+            .filter((val) => val !== null);
 
         if (emptySquares.length > 0) {
-          let moveIndex;
-          if (aiMode) {
-            moveIndex = smartMove([...board]);
-          } else {
-            moveIndex =
-              emptySquares[Math.floor(Math.random() * emptySquares.length)];
-          }
+          const moveIndex = aiMode
+              ? smartMove([...board])
+              : emptySquares[Math.floor(Math.random() * emptySquares.length)];
 
           const newBoard = [...board];
           newBoard[moveIndex] = "O";
+
+          playComputerMove(); // 🤖
           setBoard(newBoard);
           setIsPlayerTurn(true);
         }
       }, 500);
+
       return () => clearTimeout(timeout);
     }
   }, [isPlayerTurn, board, winner, aiMode]);
 
-  // ---------------- HANDLE CLICK ----------------
+  // ---------------- PLAYER MOVE ----------------
   const handleClick = (index) => {
     if (board[index] || winner || !isPlayerTurn) return;
+
+    playPlayerMove(); // 🧍
+
     const newBoard = [...board];
     newBoard[index] = "X";
     setBoard(newBoard);
     setIsPlayerTurn(false);
   };
 
-  // ---------------- WINNER EFFECT ----------------
+  // ---------------- WIN EFFECT ----------------
   useEffect(() => {
     const result = checkWinner(board);
     if (result) {
       setWinner(result);
 
-      // 🎉 Unlock AI mode if player wins in easy mode
+      if (result === "X") {
+        playWin();
+      } else {
+        playLose();
+      }
+
       if (result === "X" && !aiMode) {
         setAiMode(true);
 
@@ -205,7 +218,7 @@ function FiveByFive() {
         }, 700);
       }
     } else if (isDraw(board) && !winner) {
-      setWinner("draw");
+      setWinner("draw"); // ❌ no sound
     }
   }, [board]);
 
@@ -216,45 +229,52 @@ function FiveByFive() {
   };
 
   return (
-    <div className="tic-container text-center mt-4">
-      <h3>5x5 Tic Tac Toe <br/>
-      ({aiMode ? "You opend the next game now but don't leave try to bit the hard mode first !" 
-      : "Let's start with the easy one"})
-      </h3>
+      <div className="tic-container text-center mt-4">
+        <h3>
+          5x5 Tic Tac Toe <br />
+          ({aiMode
+            ? "You opened the next game — try beating hard mode first!"
+            : "Let's start with the easy one"})
+        </h3>
 
-      <p className="text-white-50 fst-italic">
-        {winner
-          ? winner === "draw"
-            ? "It's a Draw!"
-            : winner === "X"
-            ? "🎉 You Win!"
-            : "🤖 Computer Wins!"
-          : isPlayerTurn
-          ? "Your turn (X)"
-          : "Computer's turn (O)"}
-      </p>
-
-      <div className="board5">
-        {board.map((cell, index) => (
-          <div
-            key={index}
-            className="square"
-            onClick={() => handleClick(index)}
-          >
-            {cell}
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-3">
-        <button className="gamesB" onClick={() => navigate("/TicTacToe")}>
-          Leave
+        {/* 🔇 MUTE */}
+        <button className="btn btn-sm mb-2" onClick={() => setMuted(!muted)}>
+          {muted ? "🔇 Muted" : "🔊 Sound On"}
         </button>
-        <button onClick={resetGame} className="gamesB ms-3">
-          Play Again
-        </button>
+
+        <p className="text-white-50 fst-italic">
+          {winner
+              ? winner === "draw"
+                  ? "It's a Draw!"
+                  : winner === "X"
+                      ? "🎉 You Win!"
+                      : "🤖 Computer Wins!"
+              : isPlayerTurn
+                  ? "Your turn (X)"
+                  : "Computer's turn (O)"}
+        </p>
+
+        <div className="board5">
+          {board.map((cell, index) => (
+              <div
+                  key={index}
+                  className="square"
+                  onClick={() => handleClick(index)}
+              >
+                {cell}
+              </div>
+          ))}
+        </div>
+
+        <div className="mt-3">
+          <button className="gamesB" onClick={() => navigate("/TicTacToe")}>
+            Leave
+          </button>
+          <button onClick={resetGame} className="gamesB ms-3">
+            Play Again
+          </button>
+        </div>
       </div>
-    </div>
   );
 }
 
