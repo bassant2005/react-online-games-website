@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import "./WordGame.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import useSound from "use-sound";
-import moveSound from "./sounds/move.mp3";
-import hintSound from "./sounds/help.wav";
-import winSound from "./sounds/win.wav";
-import loseSound from "./sounds/lose.wav";
+import moveSound from "../assets/sounds/move.mp3";
+import hintSound from "../assets/sounds/help.wav";
+import winSound from "../assets/sounds/win.wav";
+import loseSound from "../assets/sounds/lose.wav";
 
 function WordGame() {
   const navigate = useNavigate();
