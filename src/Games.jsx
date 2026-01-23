@@ -29,7 +29,7 @@ function GameCard({ img, title, desc, index }) {
 
   return (
     <>
-      <div className="col-4 col-sm-4 col-md-3 col-lg-2 mb-3 mt-2 games">
+      <div className="col-sm-6 col-md-4 col-lg-3 mb-3 mt-2 games">
         <div className="box card">
           <img src={img} className="img-fluid" alt={title} />
           <div className="overlay">
