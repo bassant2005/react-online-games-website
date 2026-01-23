@@ -223,6 +223,13 @@ function WordGame() {
           </div>
 
           <div className="content-row">
+            <div className="control d-flex">
+              <button className="gamesB" onClick={handleCheck}>Check Word</button>
+              <button className="gamesB" onClick={handleHint} disabled={hintsLeft === 0}>Hint ({hintsLeft})</button>
+              <button className="gamesB" onClick={handleTryAgain}>Try Again</button>
+              <button className="gamesB" onClick={() => startLevel(currentLevel, true)}>Restart</button>
+              <button className="gamesB" onClick={() => navigate("/")}>Leave</button>
+            </div>
             <div className="inputs">
               {inputs.map((tryRow, tryIndex) => (
                   <div key={tryIndex} className={`try ${currentTry - 1 === tryIndex ? "" : "disabled"}`}>
@@ -247,17 +254,6 @@ function WordGame() {
                     </div>
                   </div>
               ))}
-            </div>
-            <div className="d-flex">
-              <div className="control d-flex">
-                <button className="gamesB" onClick={handleCheck}>Check Word</button>
-                <button className="gamesB" onClick={handleHint} disabled={hintsLeft === 0}>Hint ({hintsLeft})</button>
-              </div>
-              <button className="gamesB" onClick={handleTryAgain}>Try Again</button>
-              <div className="control d-flex">
-                <button className="gamesB" onClick={() => startLevel(currentLevel, true)}>Restart</button>
-                <button className="gamesB" onClick={() => navigate("/")}>Leave</button>
-              </div>
             </div>
           </div>
         </div>

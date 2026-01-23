@@ -70,7 +70,7 @@
     height: 100px;
   }
   .box:hover .overlay {
-  transform: translateX(0);
+    transform: translateX(0);
   }
   .overlay {
     padding: 10px;
