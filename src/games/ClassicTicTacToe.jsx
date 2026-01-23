@@ -16,22 +16,22 @@ function ClassicTicTacToe() {
   const navigate = useNavigate();
 
   // 🔊 SOUND EFFECTS
-  const [playPlayerMove] = useSound("/sounds/player-move.mp3", {
+  const [playPlayerMove] = useSound("/sounds/move.mp3", {
     volume: 0.5,
     soundEnabled: !muted,
   });
 
-  const [playComputerMove] = useSound("/sounds/computer-move.mp3", {
+  const [playComputerMove] = useSound("/sounds/computer.mp3", {
     volume: 0.5,
     soundEnabled: !muted,
   });
 
-  const [playWin] = useSound("/sounds/win.mp3", {
+  const [playWin] = useSound("/sounds/win.wav", {
     volume: 0.7,
     soundEnabled: !muted,
   });
 
-  const [playLose] = useSound("/sounds/lose.mp3", {
+  const [playLose] = useSound("/sounds/lose.wav", {
     volume: 0.7,
     soundEnabled: !muted,
   });

@@ -3,9 +3,9 @@ import "./WordGame.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import useSound from "use-sound";
 import moveSound from "./sounds/move.mp3";
-import hintSound from "./sounds/hint.mp3";
-import winSound from "./sounds/win.mp3";
-import loseSound from "./sounds/lose.mp3";
+import hintSound from "./sounds/help.wav";
+import winSound from "./sounds/win.wav";
+import loseSound from "./sounds/lose.wav";
 
 function WordGame() {
   const navigate = useNavigate();
@@ -39,8 +39,8 @@ function WordGame() {
   const [currentWord, setCurrentWord] = useState("");
   const [currentDesc, setCurrentDesc] = useState("");
   const [tries, setTries] = useState(0);
-  const [letters, setLetters] = useState(0);
-  const [hints, setHints] = useState(0);
+  const [, setLetters] = useState(0);
+  const [, setHints] = useState(0);
   const [currentTry, setCurrentTry] = useState(1);
   const [inputs, setInputs] = useState([]);
   const [results, setResults] = useState([]);

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import "./tictactoe.css";
 import { useNavigate } from "react-router-dom";
 import useSound from "use-sound";
-import playerMoveSound from "./sounds/player-move.mp3";
-import computerMoveSound from "./sounds/computer-move.mp3";
-import winSound from "./sounds/win.mp3";
-import loseSound from "./sounds/lose.mp3";
+import playerMoveSound from "./sounds/move.mp3";
+import computerMoveSound from "./sounds/computer.mp3";
+import winSound from "./sounds/win.wav";
+import loseSound from "./sounds/lose.wav";
 
 function Sus() {
   const [board, setBoard] = useState(Array(9).fill(" "));
