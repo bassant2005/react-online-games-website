@@ -47,7 +47,8 @@ h2,h3{
 }
 /* intro */
 .intro{
-  color: var(--white-color);
+  color: var(--navy-color);
+  font-weight: bolder;
 }
 .intro h2{
   background: linear-gradient(var(--white-color), transparent);

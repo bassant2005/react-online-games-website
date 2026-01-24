@@ -13,22 +13,44 @@ function Sus() {
   const [isPlayerTurn, setIsPlayerTurn] = useState(true);
   const [scorePlayer, setScorePlayer] = useState(0);
   const [scoreComputer, setScoreComputer] = useState(0);
-  const [mode, setMode] = useState("random");
+  const [mode, setMode] = useState("random"); // random = easy, ai = hard
   const navigate = useNavigate();
 
   const playerLetter = "S";
   const opponentLetter = "U";
 
-  // 🔇 MUTE
   const [muted, setMuted] = useState(false);
+  const [playMove] = useSound(moveSound, { soundEnabled: !muted });
+  const [playComputer] = useSound(computerSound, { soundEnabled: !muted });
+  const [playWin] = useSound(winSound, { soundEnabled: !muted });
+  const [playLose] = useSound(loseSound, { soundEnabled: !muted });
 
-  // 🔊 SOUND EFFECTS
-  const [playMove] = useSound(moveSound);
-  const [playComputer] = useSound(computerSound);
-  const [playWin] = useSound(winSound);
-  const [playLose] = useSound(loseSound);
+  // ---------- Progress Logic ----------
+  const updateProgress = () => {
+    let gamesList = JSON.parse(localStorage.getItem("gamesList")) || [];
+    let gamesProfile = JSON.parse(localStorage.getItem("games")) || [];
 
-  // Check if a SUS is formed
+    // Mark SuS as won
+    const index = gamesList.findIndex((g) => g.title === "Sus");
+    if (index !== -1) {
+      gamesList[index].win = true;
+      localStorage.setItem("gamesList", JSON.stringify(gamesList));
+    }
+
+    // Update progress %
+    const total = gamesList.length;
+    const won = gamesList.filter(g => g.win).length;
+    const percent = Math.round((won / total) * 100);
+
+    const updatedGames = gamesProfile.map((g) =>
+        g.title === "Sus" ? { ...g, progress: percent } : g
+    );
+
+    localStorage.setItem("games", JSON.stringify(updatedGames));
+    window.dispatchEvent(new Event("gamesUpdated"));
+  };
+
+  // ---------- Game Logic ----------
   const checkSUS = (newBoard, pos, symbol) => {
     const row = Math.floor(pos / 3);
     const col = pos % 3;
@@ -53,7 +75,6 @@ function Sus() {
 
   const isDraw = (newBoard) => newBoard.every(cell => cell !== " ");
 
-  // Player move
   const handleClick = (index) => {
     if (board[index] !== " " || winner || !isPlayerTurn) return;
     const newBoard = [...board];
@@ -64,7 +85,6 @@ function Sus() {
     setIsPlayerTurn(false);
   };
 
-  // AI Move
   const getAIMove = (newBoard) => {
     if (mode === "random") {
       const emptyCells = newBoard.map((cell, idx) => (cell === " " ? idx : null)).filter(v => v !== null);
@@ -115,20 +135,30 @@ function Sus() {
     }
   }, [isPlayerTurn, board, winner, mode, playComputer]);
 
-  // Detect winner at the end
   useEffect(() => {
     if (!winner && isDraw(board)) {
       if (scorePlayer > scoreComputer) {
         setWinner("player");
         playWin();
+
+        // ✅ Progress update for easy mode
+        if (mode === "random") updateProgress();
       } else if (scoreComputer > scorePlayer) {
         setWinner("computer");
         playLose();
-      } else {
-        setWinner("tie");
-      }
+      } else setWinner("tie");
     }
   }, [board, scorePlayer, scoreComputer, winner, playWin, playLose]);
+
+  useEffect(() => {
+    // After winning easy mode, unlock hard mode
+    if (winner === "player" && mode === "random") {
+      setTimeout(() => {
+        setMode("ai");
+        resetGame("ai");
+      }, 700);
+    }
+  }, [winner, mode]);
 
   const resetGame = (newMode = mode) => {
     setBoard(Array(9).fill(" "));
@@ -141,12 +171,14 @@ function Sus() {
 
   return (
       <div className="tic-container text-center mt-4">
-        <h3>SuS Tic Tac Toe ({mode === "random" ? "Easy Mode" : "Hard Mode"})</h3>
+        <h3>
+          Pyramid Tic Tac Toe<br />
+          {mode === "random"
+              ? "Let's start with the easy one"
+              : "You opened the next game — try beating hard mode first!"}
+        </h3>
         {/* 🔇 MUTE BUTTON */}
-        <button
-            className="btn btn-sm mb-3"
-            onClick={() => setMuted(!muted)}
-        >
+        <button className="btn btn-sm mb-3" onClick={() => setMuted(!muted)}>
           {muted ? "🔇 Muted" : "🔊 Sound On"}
         </button>
         <p className="text-white-50 fst-italic">

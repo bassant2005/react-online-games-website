@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import "./tictactoe.css";
 import { useNavigate } from "react-router-dom";
 import useSound from "use-sound";
-import playerMoveSound from "../assets/sounds/move.mp3";
-import computerMoveSound from "../assets/sounds/computer.mp3";
 import winSound from "../assets/sounds/win.wav";
 import loseSound from "../assets/sounds/lose.wav";
+import moveSound from "../assets/sounds/move.mp3";
+import computerSound from "../assets/sounds/computer.mp3";
 
 function ReverseXO() {
   const [board, setBoard] = useState(Array(9).fill(null));
-  const [isPlayerTurn, setIsPlayerTurn] = useState(true); // Player = X
+  const [isPlayerTurn, setIsPlayerTurn] = useState(true);
   const [winner, setWinner] = useState(null);
   const [aiMode, setAiMode] = useState(false); // false = easy, true = hard
   const navigate = useNavigate();
@@ -20,37 +20,65 @@ function ReverseXO() {
     [0,4,8],[2,4,6]
   ];
 
-  // 🔇 MUTE
   const [muted, setMuted] = useState(false);
+  const [playMove] = useSound(moveSound, { soundEnabled: !muted });
+  const [playComputer] = useSound(computerSound, { soundEnabled: !muted });
+  const [playWin] = useSound(winSound, { soundEnabled: !muted });
+  const [playLose] = useSound(loseSound, { soundEnabled: !muted });
 
-  const [playPlayer] = useSound(playerMoveSound);
-  const [playComputer] = useSound(computerMoveSound);
-  const [playWin] = useSound(winSound);
-  const [playLose] = useSound(loseSound);
+  // ✅ Helper: check if a symbol wins
+  const isWin = (currentBoard, symbol) =>
+      winningCombos.some(([a,b,c]) => currentBoard[a] === symbol && currentBoard[b] === symbol && currentBoard[c] === symbol);
 
-  const isWin = (currentBoard, symbol) => {
-    return winningCombos.some(([a,b,c]) => currentBoard[a] === symbol && currentBoard[b] === symbol && currentBoard[c] === symbol);
+  // ✅ Update progress in localStorage
+  const updateProgress = () => {
+    let gamesList = JSON.parse(localStorage.getItem("gamesList")) || [];
+    let gamesProfile = JSON.parse(localStorage.getItem("games")) || [];
+
+    const index = gamesList.findIndex((g) => g.title === "XO Special");
+    if (index !== -1) {
+      gamesList[index].win = true;
+      localStorage.setItem("gamesList", JSON.stringify(gamesList));
+    }
+
+    // Update overall progress %
+    const total = gamesList.length;
+    const won = gamesList.filter(g => g.win).length;
+    const percent = Math.round((won / total) * 100);
+
+    const updatedGames = gamesProfile.map((g) =>
+        g.title === "Reverse Tic Tac Toe" ? { ...g, progress: percent } : g
+    );
+    localStorage.setItem("games", JSON.stringify(updatedGames));
+
+    // Notify listeners
+    window.dispatchEvent(new Event("gamesUpdated"));
   };
 
+  // ✅ Check winner
   const checkWinner = (currentBoard) => {
     for (let [a,b,c] of winningCombos) {
       if (currentBoard[a] && currentBoard[a] === currentBoard[b] && currentBoard[a] === currentBoard[c]) {
-        const loser = currentBoard[a];
+        const loser = currentBoard[a]; // in reverse XO, you lose if you make 3 in a row
         const winnerPlayer = loser === "X" ? "O" : "X";
         setWinner(winnerPlayer);
         winnerPlayer === "X" ? playWin() : playLose();
 
         if (winnerPlayer === "X" && !aiMode) {
-          setAiMode(true);
-          setTimeout(() => resetGame(), 1000);
+          setAiMode(true); // unlock hard mode
+          updateProgress(); // save progress
+          setTimeout(resetGame, 1000);
         }
         return;
       }
     }
-    if (currentBoard.every(cell => cell !== null) && !winner) setWinner("draw");
+
+    if (currentBoard.every(cell => cell !== null) && !winner) {
+      setWinner("draw");
+    }
   };
 
-  // Minimax for hard AI
+  // 🧠 Minimax for hard AI
   const minimax = (board, isMaximizing) => {
     if (isWin(board, "X")) return +10;
     if (isWin(board, "O")) return -10;
@@ -112,7 +140,7 @@ function ReverseXO() {
     if (!isPlayerTurn || board[index] || winner) return;
     const newBoard = [...board]; newBoard[index] = "X";
     setBoard(newBoard);
-    playPlayer();
+    playMove();
     checkWinner(newBoard);
     setIsPlayerTurn(false);
   };
@@ -132,19 +160,27 @@ function ReverseXO() {
 
   return (
       <div className="tic-container text-center mt-4">
-        <h3>Misère Tic Tac Toe ({aiMode ? "Hard Mode" : "Easy Mode"})</h3>
-        {/* 🔇 MUTE BUTTON */}
-        <button
-            className="btn btn-sm mb-3"
-            onClick={() => setMuted(!muted)}
-        >
+        <h3>Reverse Tic Tac Toe  Classic Tic Tac Toe <br />
+          ({aiMode
+              ? "You opened the next game — try beating hard mode first!"
+              : "Let's start with the easy one"})
+        </h3>
+
+        {/* 🔇 MUTE */}
+        <button className="btn btn-sm mb-3" onClick={() => setMuted(!muted)}>
           {muted ? "🔇 Muted" : "🔊 Sound On"}
         </button>
+
         <p className="text-white-50 fst-italic">
           {winner
-              ? winner === "draw" ? "It's a Draw!" :
-                  winner === "X" ? "🎉 You Win!" : "🤖 Computer Wins!"
-              : isPlayerTurn ? "Your turn (X)" : "Computer's turn (O)"}
+              ? winner === "draw"
+                  ? "It's a Draw!"
+                  : winner === "X"
+                      ? "🎉 You Win!"
+                      : "🤖 Computer Wins!"
+              : isPlayerTurn
+                  ? "Your turn (X)"
+                  : "Computer's turn (O)"}
         </p>
 
         <div className="board">

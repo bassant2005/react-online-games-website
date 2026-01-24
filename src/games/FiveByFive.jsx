@@ -13,17 +13,14 @@ function FiveByFive() {
   const [isPlayerTurn, setIsPlayerTurn] = useState(true);
   const [winner, setWinner] = useState(null);
   const [aiMode, setAiMode] = useState(false);
+  const navigate = useNavigate();
 
   // 🔇 MUTE
   const [muted, setMuted] = useState(false);
-
-  const navigate = useNavigate();
-
-  // 🔊 SOUND EFFECTS
-  const [playMove] = useSound(moveSound);
-  const [playComputer] = useSound(computerSound);
-  const [playWin] = useSound(winSound);
-  const [playLose] = useSound(loseSound);
+  const [playMove] = useSound(moveSound, { soundEnabled: !muted });
+  const [playComputer] = useSound(computerSound, { soundEnabled: !muted });
+  const [playWin] = useSound(winSound, { soundEnabled: !muted });
+  const [playLose] = useSound(loseSound, { soundEnabled: !muted });
 
   // ---------------- CHECK WINNER ----------------
   const checkWinner = (b) => {

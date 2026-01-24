@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import "./tictactoe.css";
 import { useNavigate } from "react-router-dom";
 import useSound from "use-sound";
-import playerMoveSound from "../assets/sounds/move.mp3";
-import computerMoveSound from "../assets/sounds/computer.mp3";
 import winSound from "../assets/sounds/win.wav";
 import loseSound from "../assets/sounds/lose.wav";
+import moveSound from "../assets/sounds/move.mp3";
+import computerSound from "../assets/sounds/computer.mp3";
 
 // ---------- Board Setup ----------
 const initialBoard = () => {
@@ -84,6 +84,28 @@ function getBestMove(board) {
   return bestMove;
 }
 
+// ---------- Progress Logic ----------
+const updateProgress = () => {
+  let gamesList = JSON.parse(localStorage.getItem("gamesList")) || [];
+  let gamesProfile = JSON.parse(localStorage.getItem("games")) || [];
+
+  const index = gamesList.findIndex((g) => g.title === "Pyramid Tic Tac Toe");
+  if (index !== -1) {
+    gamesList[index].win = true;
+    localStorage.setItem("gamesList", JSON.stringify(gamesList));
+  }
+
+  const total = gamesList.length;
+  const won = gamesList.filter(g => g.win).length;
+  const percent = Math.round((won / total) * 100);
+
+  const updatedGames = gamesProfile.map((g) =>
+      g.title === "Pyramid Tic Tac Toe" ? { ...g, progress: percent } : g
+  );
+  localStorage.setItem("games", JSON.stringify(updatedGames));
+  window.dispatchEvent(new Event("gamesUpdated"));
+};
+
 // ---------- Component ----------
 export default function PyramidTicTacToe() {
   const [board, setBoard] = useState(initialBoard());
@@ -93,13 +115,11 @@ export default function PyramidTicTacToe() {
 
   const navigate = useNavigate();
 
-  // 🔇 MUTE
   const [muted, setMuted] = useState(false);
-
-  const [playPlayer] = useSound(playerMoveSound);
-  const [playComputer] = useSound(computerMoveSound);
-  const [playWin] = useSound(winSound);
-  const [playLose] = useSound(loseSound);
+  const [playMove] = useSound(moveSound, { soundEnabled: !muted });
+  const [playComputer] = useSound(computerSound, { soundEnabled: !muted });
+  const [playWin] = useSound(winSound, { soundEnabled: !muted });
+  const [playLose] = useSound(loseSound, { soundEnabled: !muted });
 
   const handleClick = (i, j) => {
     if (winner || board[i][j] === "X" || board[i][j] === "O" || board[i][j] === " ") return;
@@ -107,11 +127,16 @@ export default function PyramidTicTacToe() {
     const newBoard = board.map(row => [...row]);
     newBoard[i][j] = turn;
     setBoard(newBoard);
-    playPlayer();
+    playMove();
 
     if (checkWin(newBoard, turn)) {
       setWinner(turn);
       turn === "X" ? playWin() : playLose();
+
+      // ✅ Progress update for easy mode
+      if (turn === "X" && mode === "random") {
+        updateProgress();
+      }
     } else if (isDraw(newBoard)) {
       setWinner("draw");
     } else {
@@ -167,14 +192,18 @@ export default function PyramidTicTacToe() {
 
   return (
       <div className="pyramid tic-container">
-        <h3>Pyramid Tic Tac Toe ({mode === "random" ? "Easy Mode" : "Hard Mode"})</h3>
+        <h3>
+          Pyramid Tic Tac Toe<br />
+          {mode === "random"
+              ? "Let's start with the easy one"
+              : "You opened the next game — try beating hard mode first!"}
+        </h3>
+
         {/* 🔇 MUTE BUTTON */}
-        <button
-            className="btn btn-sm mb-3"
-            onClick={() => setMuted(!muted)}
-        >
+        <button className="btn btn-sm mb-3" onClick={() => setMuted(!muted)}>
           {muted ? "🔇 Muted" : "🔊 Sound On"}
         </button>
+
         <p className="text-white-50 fst-italic">
           {winner
               ? winner === "draw"

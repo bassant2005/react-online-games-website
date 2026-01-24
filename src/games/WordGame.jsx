@@ -50,13 +50,11 @@ function WordGame() {
   const [gameOver, setGameOver] = useState(false);
 
   // ---------------- SOUNDS ----------------
-  const [playMove] = useSound(moveSound);
-  const [playHint] = useSound(hintSound);
-  const [playWin] = useSound(winSound);
-  const [playLose] = useSound(loseSound);
-
-  // 🔇 MUTE
   const [muted, setMuted] = useState(false);
+  const [playMove] = useSound(moveSound, { soundEnabled: !muted });
+  const [playHint] = useSound(hintSound, { soundEnabled: !muted });
+  const [playWin] = useSound(winSound, { soundEnabled: !muted });
+  const [playLose] = useSound(loseSound, { soundEnabled: !muted });
 
   // ---------------- START LEVEL ----------------
   const startLevel = (levelIndex, resetProgress = false) => {
@@ -208,12 +206,17 @@ function WordGame() {
       <div className="guess-game">
         <h1>{gameName} ✍</h1>
         {/* 🔇 MUTE BUTTON */}
-        <button
-            className="btn btn-sm mb-3"
-            onClick={() => setMuted(!muted)}
-        >
-          {muted ? "🔇 Muted" : "🔊 Sound On"}
-        </button>
+        <div className="d-flex">
+          <button
+              className="btn btn-sm mb-3 me-4"
+              onClick={() => setMuted(!muted)}
+          >
+            {muted ? "🔇 Muted" : "🔊 Sound On"}
+          </button>
+          <button className="btn btn-sm mb-3" onClick={() => navigate("/")}>
+            Leave
+          </button>
+        </div>
         <div className="game-area">
           <div className="message">
             <span>{message}</span><br /><br />
@@ -221,16 +224,14 @@ function WordGame() {
             <br /><br />
             <span>Progress: </span>{progress}%
           </div>
+          <br />
+          <div className="d-flex">
+            <span className="wrong" style={{ color: "#B3A398" }}>wrong </span> -
+            <span className="not-in-place" style={{ color: "#ff009be6" }}> not in place </span> -
+            <span className="in-place" style={{ color: "#9df8ff" }}> correct</span>
+          </div>
 
-          <div className="content-row">
-            <div className="control d-flex">
-              <button className="gamesB" onClick={handleCheck}>Check Word</button>
-              <button className="gamesB" onClick={handleHint} disabled={hintsLeft === 0}>Hint ({hintsLeft})</button>
-              <button className="gamesB" onClick={handleTryAgain}>Try Again</button>
-              <button className="gamesB" onClick={() => startLevel(currentLevel, true)}>Restart</button>
-              <button className="gamesB" onClick={() => navigate("/")}>Leave</button>
-            </div>
-            <br/><br/>
+          <div className="content-row d-flex" >
             <div className="inputs">
               {inputs.map((tryRow, tryIndex) => (
                   <div key={tryIndex} className={`try ${currentTry - 1 === tryIndex ? "" : "disabled"}`}>
@@ -255,6 +256,12 @@ function WordGame() {
                     </div>
                   </div>
               ))}
+            </div>
+            <div className="control d-grid">
+              <button className="gamesB" onClick={handleCheck}>Check Word</button>
+              <button className="gamesB" onClick={handleHint} disabled={hintsLeft === 0}>Hint ({hintsLeft})</button>
+              <button className="gamesB" onClick={handleTryAgain}>Try Again</button>
+              <button className="gamesB" onClick={() => startLevel(currentLevel, true)}>Restart</button>
             </div>
           </div>
         </div>

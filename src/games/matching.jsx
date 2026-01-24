@@ -37,11 +37,9 @@ function Matching() {
 
     // 🔇 MUTE
     const [muted, setMuted] = useState(false);
-
-    // 🔊 SOUND EFFECTS
-    const [playMove] = useSound(moveSound);
-    const [playHint] = useSound(hintSound);
-    const [playWin] = useSound(winSound);
+    const [playMove] = useSound(moveSound, { soundEnabled: !muted });
+    const [playHint] = useSound(hintSound, { soundEnabled: !muted });
+    const [playWin] = useSound(winSound, { soundEnabled: !muted });
 
     // 🎮 START GAME
     const startGame = (symbol, levelIdx = 0) => {

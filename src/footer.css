@@ -30,7 +30,10 @@
     font-size: 18px;
   }
   .footer .a{
-    font-size: 22px;
+    font-size: 20px;
+  }
+  .footer .fa-brands{
+    font-size: 30px;
   }
 }
 

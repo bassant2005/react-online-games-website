@@ -59,22 +59,6 @@ function Profile() {
     });
   };
 
-  // ⭐ Play Wordle and close modal
-  const handlePlay = (gameTitle) => {
-    let fullPath = '';
-    
-    if (gameTitle === "Wordle") {
-      fullPath = `${window.location.origin}/react-online-games-website/#/WordGame`; 
-    }
-    else if(gameTitle === "Tic Tac Toe"){
-      fullPath = `${window.location.origin}/react-online-games-website/#/TicTacToe`;
-    }
-    else if(gameTitle === "Memory Match"){
-      fullPath = `${window.location.origin}/react-online-games-website/#/Matching`;
-    }
-    window.open(fullPath);
-  };
-
   return (
     <div
       className="modal fade"
@@ -129,13 +113,6 @@ function Profile() {
                       </div>
                     </div>
                     <div>
-                      <button
-                        className="btn"
-                        onClick={() => handlePlay(game.title)}
-                      >
-                        Play
-                      </button>
-
                       <button
                         className="btn mt-2"
                         onClick={() => handleRemoveGame(index,game.title)}

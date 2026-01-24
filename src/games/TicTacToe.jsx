@@ -45,7 +45,7 @@ function GameCard({ img, title, desc, path, locked }) {
   };
 
   return (
-    <div className="col-4 col-sm-4 col-md-3 col-lg-2 mb-3 mt-2 games">
+    <div className="col-4 col-sm-4 col-md-3 col-lg-2 mb-3 mt-2 games me-3">
       <div className={`box tic card ${locked ? "locked" : ""}`}>
         <img src={img} className="img-fluid" alt={title} />
         <div className="overlay">

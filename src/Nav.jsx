@@ -13,29 +13,13 @@ function Nav() {
       <div className="navbar navbar-expand-lg sticky-top">
         <div className="container">
           {/* Logo */}
-          <a className="navbar-brand" href="#">
-            <img src={logo} className="logo" alt="logo" /><span> Basantotat</span> 
+          <a className="navbar-brand">
+            <img src={logo} className="logo"/><span> Basantotat</span>
           </a>
 
           {/* ✅ nav links */}
           <div className="d-flex" id="mainNavbar">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <a 
-                  className="nav-link"
-                  onClick={() => document.getElementById("games").scrollIntoView({ behavior: "smooth" })}
-                >
-                  <i className="fa-solid fa-gamepad"></i>
-                </a>
-              </li>
-              <li className="nav-item">
-                <a 
-                  className="nav-link"
-                  onClick={() => document.getElementById("footer").scrollIntoView({ behavior: "smooth" })}
-                >
-                  <i className="fa-solid fa-comments"></i>
-                </a>
-              </li>
               <li className="nav-item">
                 <a
                   className="nav-link"
