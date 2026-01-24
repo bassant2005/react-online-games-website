@@ -96,5 +96,9 @@
     width: 60px;
     height: 60px;
   }
+  .tic .overlay button {
+    height: 40px;
+    width: 60px;
+  }
 }
 

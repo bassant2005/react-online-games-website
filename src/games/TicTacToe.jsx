@@ -57,7 +57,7 @@ function GameCard({ img, title, desc, path, locked }) {
             className="btn-link"
             disabled={locked}
           >
-            {locked ? "Locked 🔒" : "Play"}
+            {locked ? "🔐" : "Play"}
           </button>
         </div>
       </div>
