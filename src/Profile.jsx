@@ -49,10 +49,25 @@ function Profile() {
     </>
   );
 
-  // ⭐ Remove game
-  const handleRemoveGame = (gameIndex) => {
+  const handleRemoveGame = (gameIndex, gameTitle) => {
     setGames((prevGames) => {
       const updated = prevGames.filter((_, index) => index !== gameIndex);
+
+      // 🧹 لو اللعبة Tic Tac Toe → صفّري التقدم
+      if (gameTitle === "Tic Tac Toe") {
+        // 1️⃣ تصفير wins
+        let gamesList = JSON.parse(localStorage.getItem("gamesList")) || [];
+        gamesList = gamesList.map((g) => ({ ...g, win: false }));
+        localStorage.setItem("gamesList", JSON.stringify(gamesList));
+
+        // 2️⃣ تصفير progress لو كانت موجودة
+        updated.forEach((g) => {
+          if (g.title === "Tic Tac Toe") {
+            g.progress = 0;
+          }
+        });
+      }
+
       localStorage.setItem("games", JSON.stringify(updated));
       window.dispatchEvent(new Event("gamesUpdated"));
       return updated;
@@ -115,7 +130,7 @@ function Profile() {
                     <div>
                       <button
                         className="btn mt-2"
-                        onClick={() => handleRemoveGame(index,game.title)}
+                        onClick={() => handleRemoveGame(index, game.title)}
                       >
                         Remove
                       </button>
